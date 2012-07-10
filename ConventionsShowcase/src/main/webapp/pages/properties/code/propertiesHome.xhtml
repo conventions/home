@@ -27,7 +27,7 @@ and open the template in the editor.
                         &lt;h:outputLabel for="key1" value="key1"/&gt;
                     &lt;/p:column&gt;
                     &lt;p:column&gt;
-                        &lt;h:outputText id="key1" value="/#{propertiesMBean.key}"/&gt;
+                        &lt;h:outputText id="key1" value="\#{propertiesMBean.key}"/&gt;
                     &lt;/p:column&gt;     
                 &lt;/p:row&gt;
                 &lt;p:row&gt;
@@ -35,7 +35,7 @@ and open the template in the editor.
                         &lt;h:outputLabel for="key2" value="key2"/&gt;
                     &lt;/p:column&gt;
                     &lt;p:column&gt;
-                        &lt;h:outputFormat id="key2" value="/#{propertiesMBean.key2}"&gt;
+                        &lt;h:outputFormat id="key2" value="\#{propertiesMBean.key2}"&gt;
                             &lt;f:param value="key2Param"/&gt;
                         &lt;/h:outputFormat&gt;
                     &lt;/p:column&gt;     
@@ -57,7 +57,7 @@ and open the template in the editor.
                         &lt;h:outputLabel for="otherKey" value="key1"/&gt;
                     &lt;/p:column&gt;
                     &lt;p:column&gt;
-                        &lt;h:outputText id="otherKey" value="/#{propertiesMBean.otherKey}"/&gt;
+                        &lt;h:outputText id="otherKey" value="\#{propertiesMBean.otherKey}"/&gt;
                     &lt;/p:column&gt;     
                 &lt;/p:row&gt;
                  &lt;p:row&gt;
@@ -78,7 +78,7 @@ and open the template in the editor.
                         &lt;p:inputText value="\#{propertiesMBean.keyTyped}" &gt;
                             &lt;p:ajax event="change" partialSubmit="true" process="@this" update="@none"/&gt;
                         &lt;/p:inputText&gt;
-                        &lt;p:commandButton value="Ok" action=&quot;\#{propertiesMBean.keyFromInjectedProperties(propertiesMBean.keyTyped)}&quot; update="msg"/&gt;
+                        &lt;p:commandButton value="Ok" action=&quot;\#{propertiesMBean.keyFromInjectedProperties()}&quot; update="msg"/&gt;
                     &lt;/p:column&gt;
                 &lt;/p:row&gt;
             &lt;/p:panelGrid&gt;   

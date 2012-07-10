@@ -68,7 +68,7 @@
                         <p:inputText value="#{propertiesMBean.keyTyped}" >
                             <p:ajax event="change" partialSubmit="true" process="@this" update="@none"/>
                         </p:inputText>
-                        <p:commandButton value="Ok" action="#{propertiesMBean.keyFromInjectedProperties(propertiesMBean.keyTyped)}" update="msg"/>
+                        <p:commandButton value="Ok" action="#{propertiesMBean.keyFromInjectedProperties()}" update="msg"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>   

@@ -44,13 +44,13 @@ public class PropertiesMBean implements Serializable{
     private String keyTyped;
 
  
-    public void keyFromInjectedProperties(String key){
-        String value = propertyFile.getProperty(key.trim());   
+    public void keyFromInjectedProperties(){
+        String value = propertyFile.getProperty(keyTyped.trim());   
         if(value != null){
-            MessagesController.addInfo("Value of "+key + " = " +value);
+            MessagesController.addInfo("Value of "+keyTyped + " = " +value);
         }
         else{
-            MessagesController.addError("Key:'"+key + "' not found in <span style='text-decoration:underline'>showcase.properties</span>");
+            MessagesController.addError("Key:'"+keyTyped + "' not found in <span style='text-decoration:underline'>showcase.properties</span>");
         }
     }
 

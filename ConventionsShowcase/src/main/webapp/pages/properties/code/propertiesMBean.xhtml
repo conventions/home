@@ -30,11 +30,10 @@ public class PropertiesMBean implements Serializable{
     @Inject @PropertyKey(key="key1",file="/com/conventions/showcase/showcase.properties")
     private String key;
     
-    
     @Inject @PropertyKey(key="key1",file="/otherProps.properties")
     private String otherKey;
     
-    //default .properties file can be configured 
+    //default .properties file can be configured
     //via 'DEFAULT_PROPERTIES_PATH' contextParam in web.xml
     //so you dont net to specify the file everytime
     @Inject @PropertyKey(key="key2")
@@ -50,13 +49,13 @@ public class PropertiesMBean implements Serializable{
     private String keyTyped;
 
  
-    public void keyFromInjectedProperties(String key){
-        String value = propertyFile.getProperty(key.trim());   
+    public void keyFromInjectedProperties(){
+        String value = propertyFile.getProperty(keyTyped.trim());   
         if(value != null){
-            MessagesController.addInfo("Value of "+key + " = " +value);
+            MessagesController.addInfo("Value of "+keyTyped + " = " +value);
         }
         else{
-            MessagesController.addError("Key:'"+key + "' not found in <span style='text-decoration:underline'>showcase.properties</span>");
+            MessagesController.addError("Key:'"+keyTyped + "' not found in <span style='text-decoration:underline'>showcase.properties</span>");
         }
     }
 
@@ -97,4 +96,5 @@ public class PropertiesMBean implements Serializable{
     }
     
 }
+
 </ui:composition>
