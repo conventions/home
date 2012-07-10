@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+            <!-- Modal selection 1 -->
+              <framework:modal id="findPersonDlg" header="find people returned by modal1"
+                             widgetVar="findPersonDlg"
+                             showEffect="clip"
+                             hideEffect="explode"
+                             closeListener="#{personSelectionModalMBean.clearSelection}"
+                             mbean="#{personSelectionModalMBean}"
+                             update=":personSelectionForm:pageControl"
+                             >
+                    <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 lazy="true"
+                                 rowIndexVar="rowIndex"
+                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 rowKey="#{row.id}"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 widgetVar="tablevar1"
+                                 rowsPerPageTemplate="5,10,15,20,30">
+                        
+                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Name
+                            </f:facet>
+                            <h:outputText value="#{row.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Lastname
+                            </f:facet>
+                            <h:outputText value="#{row.lastname}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{row.age}" filterBy="#{row.age}"
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Age
+                            </f:facet>
+                            <h:outputText value="#{row.age}"/>
+                        </p:column>
+                    </p:dataTable>
+            </framework:modal>
+
+            <!-- Modal selection 2-->
+
+            <framework:modal id="findPersonDlg2" header="find people returned by modal2"
+                             widgetVar="findPersonDlg2"
+                             mbean="#{personSelectionModalMBean2}"
+                             update=":personSelectionForm:pageControl"
+                             >
+                    <p:dataTable value="#{personSelectionModalMBean2.list}" 
+                                 selection="#{personSelectionModalMBean2.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 rowKey="#{row.id}"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 widgetVar="tablevar2"
+                                 rowsPerPageTemplate="5,10,15,20,30">
+                        
+                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Name
+                            </f:facet>
+                            <h:outputText value="#{row.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Lastname
+                            </f:facet>
+                            <h:outputText value="#{row.lastname}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{row.age}" filterBy="#{row.age}"
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Age
+                            </f:facet>
+                            <h:outputText value="#{row.age}"/>
+
+                        </p:column>
+                    </p:dataTable>
+            </framework:modal>
+            
+</ui:composition> 

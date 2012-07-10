@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/main.xhtml">
+
+    <ui:define name="content">
+        <h1 class="title ui-widget-header ui-corner-all">Modal Selection Home</h1>
+        <div class="entry">
+            <p>- One managed bean can get data from multiple modals.</p>
+            <p>- modal reuse, one modal can be called by multiple managed beans.</p>
+            <h:form id="personSelectionForm">
+                <p:outputPanel id="pageControl">
+                    <center>
+                        <p:messages id="msg"/>
+                    </center>
+
+                    <p:panel style="overflow: auto;" >
+                        <p:dataTable value="#{personSelectionMBean.list}" 
+                                     widgetVar="tableVar" id="table" var="row" 
+                                     emptyMessage="No person found"
+                                     rowIndexVar="rowIndex"
+                                     rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                     rows="5" paginatorPosition="bottom"
+                                     paginator="true" paginatorTemplate="{CurrentPageReport} 
+                                     {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                                     {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,20,30">
+                            <f:facet name="header">  
+                                <h:panelGrid columns="1" >
+                                    <h:column>
+                                        <p:commandButton value="Find Person from modal 1" 
+                                                         update=":findPersonDlg:findPersonDlg_panel"
+                                                         action="#{personSelectionMBean.initPersonSelectionModal}"
+                                                         oncomplete="findPersonDlg.show();tablevar1.getPaginator().setPage(0);" 
+                                                         icon="ui-icon ui-icon-zoomin"/>
+                                        <p:commandButton value="Find Person from modal 2" 
+                                                         update=":findPersonDlg2:findPersonDlg2_panel"
+                                                         oncomplete="findPersonDlg2.show();tablevar2.getPaginator().setPage(0);" 
+                                                         icon="ui-icon ui-icon-zoomin"/>
+                                    </h:column>
+                                </h:panelGrid>
+                            </f:facet>  
+                            <p:column sortBy="#{row.name}">
+                                <f:facet name="header">
+                                    Name
+                                </f:facet>
+                                <h:outputText value="#{row.name}"/>
+
+                            </p:column>
+                            <p:column sortBy="#{row.lastname}">
+                                <f:facet name="header">
+                                    Lastname
+                                </f:facet>
+                                <h:outputText value="#{row.lastname}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{row.age}">
+                                <f:facet name="header">
+                                    Age
+                                </f:facet>
+                                <h:outputText value="#{row.age}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">
+                                    Remove
+                                </f:facet>
+                                <div align="center">
+                                    <framework:removeLink  mbean="#{personSelectionMBean}" 
+                                                           row="#{row}"
+                                                           modal="removeGridPersonModal"
+                                                           renderIcon="false" />
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>   
+
+                </p:outputPanel>
+                <framework:messageHide messageId=":personSelectionForm:msg" />
+
+                <framework:modalRemoval mbean="#{personSelectionMBean}"
+                                        update=":personSelectionForm:pageControl :personSelectionForm:msg"
+                                        oncomplete="removeGridPersonModal.hide();hideMsg(args);"
+                                        persistentRemove="false"
+                                        widgetVar="removeGridPersonModal">
+                </framework:modalRemoval>
+            </h:form>
+
+            <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+            <h3>Source</h3>
+
+            <p:tabView >
+                <p:tab title="PersonSelectionMBean.java">
+                    <pre name="code" class="xml">
+                            <ui:include src="code/personSelectionMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="modalSelection.xhtml">
+                    <pre name="code" class="xml">
+                            <ui:include src="code/modalSelection.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="modals.xhtml">
+                    <pre name="code" class="xml">
+                            <ui:include src="code/modals.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="PersonSelectionModalMBean.java">
+                    <pre name="code" class="xml">
+                            <ui:include src="code/personSelectionModalMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="PersonSelectionModalMBean2.java">
+                    <pre name="code" class="xml">
+                            <ui:include src="code/personSelectionModalMBean2.xhtml"/>  
+                    </pre>
+                </p:tab>
+
+            </p:tabView>
+        </div>
+
+    </ui:define>
+    <ui:define name="popup">
+        <ui:include src="modals.xhtml"/>
+    </ui:define>
+</ui:composition>

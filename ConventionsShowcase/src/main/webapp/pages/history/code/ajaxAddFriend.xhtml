@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Friends of \#{ajaxStateMBean.entity.name}&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;p:panel id="trackablePanelFriend" style="margin-top: 20px;overflow: auto;" header="Friends"&gt;
+                    &lt;center&gt;
+                        &lt;framework:backButton update=":historyForm:pageControl"/&gt;
+                        &lt;h:panelGrid columns="2"&gt;
+                            &lt;framework:saveButton  mbean="\#{ajaxStateMBean}" process=":historyForm:trackablePanelFriend" ajax="true"
+                                                   update=":historyForm:trackablePanelFriend :historyForm:msg" oncomplete="hideMsg(args)" /&gt;
+                            &lt;p:commandButton value="Go Home" action="\#{ajaxStateMBean.setInitState}" actionListener="\#{stateController.clearState}" immediate="true"/&gt;
+                        &lt;/h:panelGrid&gt;
+                    &lt;/center&gt;
+                    &lt;p:dataTable value="\#{ajaxStateMBean.entity.friends}" widgetVar="tableVar" id="tableFriend" var="row" emptyMessage="You have no friends"
+                                 rowIndexVar="rowIndex" 
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;f:facet name="header"&gt;
+                             &lt;p:commandButton value="Add Friends"
+                                             action="\#{ajaxStateMBean.initPersonSelectionModal}"
+                                             update=":findFriendDlg:findFriendDlg_panel"
+                                             oncomplete="findFriendDlg.show()"/&gt;
+                        &lt;/f:facet&gt;
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+
+                        &lt;/p:column&gt;
+                        &lt;p:column style="width: 40px"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Remove
+                            &lt;/f:facet&gt;
+                            &lt;div align="center"&gt;
+                                &lt;framework:removeLink mbean="\#{ajaxStateMBean}" row="\#{row}" modal="removeFriendModal"/&gt;
+                            &lt;/div&gt;
+                        &lt;/p:column&gt;
+                        &lt;f:facet name="footer"&gt;
+                            &lt;framework:tableFooter value="\#{ajaxStateMBean.entity.numFriends}"
+                                           renderAddButton="false"
+                                           /&gt;
+                        &lt;/f:facet&gt;
+                    &lt;/p:dataTable&gt;
+                &lt;/p:panel&gt;
+                &lt;framework:modalRemoval mbean="\#{ajaxStateMBean}"
+                                        update=":historyForm:removeFriendModal:msgRemove :historyForm:tableFriend"
+                                        oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                        persistentRemove="false"
+                                        id="removeFriendModal"
+                                        height="200"
+                                        widgetVar="removeFriendModal"&gt;
+                    &lt;p:inputText value="\#{ajaxStateMBean.entityAux.name}" disabled="true"/&gt;
+                &lt;/framework:modalRemoval&gt;
+            
+             &lt;/div&gt;
+</ui:composition>

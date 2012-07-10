@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+ &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:conventions="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml"&gt;
+
+
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Properties Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;center&gt;&lt;p:growl id="msg" escape="false" life="2500"/&gt;&lt;/center&gt;
+            &lt;p:panelGrid &gt;
+                &lt;p:row&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputLabel for="key1" value="key1"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputText id="key1" value="/#{propertiesMBean.key}"/&gt;
+                    &lt;/p:column&gt;     
+                &lt;/p:row&gt;
+                &lt;p:row&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputLabel for="key2" value="key2"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputFormat id="key2" value="/#{propertiesMBean.key2}"&gt;
+                            &lt;f:param value="key2Param"/&gt;
+                        &lt;/h:outputFormat&gt;
+                    &lt;/p:column&gt;     
+                &lt;/p:row&gt;
+                &lt;p:row&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputLabel value="key3"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;!-- propertyKey component also can access .properties file, if no file is specified,
+                        the component will retrieve keys from default file @see DEFAULT_PROPERTIES_PATH web.xml param)  --&gt;
+                        &lt;conventions:propertyKey key="key3" &gt;
+                            &lt;f:param  value="some param"/&gt;
+                        &lt;/conventions:propertyKey&gt; 
+                    &lt;/p:column&gt;     
+                &lt;/p:row&gt;
+                &lt;p:row&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputLabel for="otherKey" value="key1"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputText id="otherKey" value="/#{propertiesMBean.otherKey}"/&gt;
+                    &lt;/p:column&gt;     
+                &lt;/p:row&gt;
+                 &lt;p:row&gt;
+                    &lt;p:column&gt;
+                        &lt;h:outputLabel  value="key2"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;conventions:propertyKey key="key2" file="/otherProps.properties"&gt;
+                            &lt;f:param  value="some other param"/&gt;
+                        &lt;/conventions:propertyKey&gt; 
+                    &lt;/p:column&gt;     
+                &lt;/p:row&gt;
+                &lt;p:row&gt;
+                    &lt;p:column &gt;
+                        Type a key:
+                    &lt;/p:column&gt;
+                    &lt;p:column&gt;
+                        &lt;p:inputText value="\#{propertiesMBean.keyTyped}" &gt;
+                            &lt;p:ajax event="change" partialSubmit="true" process="@this" update="@none"/&gt;
+                        &lt;/p:inputText&gt;
+                        &lt;p:commandButton value="Ok" action=&quot;\#{propertiesMBean.keyFromInjectedProperties(propertiesMBean.keyTyped)}&quot; update="msg"/&gt;
+                    &lt;/p:column&gt;
+                &lt;/p:row&gt;
+            &lt;/p:panelGrid&gt;   
+
+
+        &lt;/div&gt;
+    &lt;/ui:composition&gt;
+</ui:composition>

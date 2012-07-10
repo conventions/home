@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="historyStackHome.xhtml">
+       <!-- push this managed bean in history stack with findState when page is rendered, 
+       this is the clientSide way to push a bean in the historyStack --> 
+       <framework:statePusher mbean="#{trackablePersonMBean}" state="#{findState}"/>
+        <h1 class="title ui-widget-header ui-corner-all">Trackable MBean1</h1>
+                    <center>
+                        <p:panel id="trackablePanel" style="overflow: auto;margin-top: 50px">
+                            <p:dataTable value="#{trackablePersonMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex"
+                                         lazy="true"
+                                         rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,20,30">
+                                <p:ajax event="page"  onstart="block('div[id$=table]','paging...')" oncomplete="unblock('div[id$=table]')"/>
+                                <p:ajax event="sort"  onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
+                                <p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]')"/>
+                               
+                                <p:column  sortBy="#{row.name}" filterBy="#{row.name}" filterEvent="enter">
+                                    <f:facet name="header">
+                                        Name
+                                    </f:facet>
+                                    <h:outputText value="#{row.name}"/>
+                                </p:column>
+                                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" filterEvent="enter">
+                                    <f:facet name="header">
+                                        Lastname
+                                    </f:facet>
+                                    <h:outputText value="#{row.lastname}"/>
+                                </p:column>
+
+                                <p:column sortBy="#{row.age}" filterBy="#{row.age}"  filterStyle="width:50px">
+                                    <f:facet name="header">
+                                        Age
+                                    </f:facet>
+                                    <h:outputText value="#{row.age}"/>
+
+                                </p:column>
+                                <p:column headerText="Created" sortBy="#{row.createDate}" >
+                                    <h:outputText value="#{row.createDate}">
+                                        <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy hh:mm:ss"/>
+                                    </h:outputText>
+
+                                </p:column>
+                                <p:column headerText="Updated" sortBy="#{row.updateDate}" >
+                                    <h:outputText value="#{row.updateDate}">
+                                        <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy hh:mm:ss"/>
+                                    </h:outputText>
+
+                                </p:column>
+                                <p:column style="width: 40px">
+                                    <f:facet name="header">
+                                        Edit
+                                    </f:facet>
+                                    <div align="center">
+                                        <framework:editLink  mbean="#{trackablePersonMBean}" row="#{row}" />
+                                    </div>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <framework:tableFooter mbean="#{trackablePersonMBean}" renderAddButton="true"/>
+                                </f:facet>
+                            </p:dataTable>
+                            <span class="homeText"> - filter columns only fire event when enter key is pressed to avoid quering on large datasets multiple times </span>
+                            
+                            
+                        </p:panel>
+                    </center>
+
+
+</ui:composition>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.jsf.conventions.service.impl;
+
+import com.jsf.conventions.dao.HibernateDao;
+import com.jsf.conventions.model.AbstractBaseEntity;
+import com.jsf.conventions.qualifier.StatefulHibernateDao;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+/**
+ *
+ * @author rmpestano
+ */
+@Named
+@StatefullService
+public class StatefulHibernateService&lt;T extends AbstractBaseEntity,K extends Serializable&gt; extends BaseServiceImpl&lt;T, K&gt;{
+
+
+
+    @Inject 
+    public void setHibernateDao(@StatefulHibernateDao HibernateDao&lt;T, K&gt; hibernateDao) {
+        super.setDao(hibernateDao);
+    }
+    
+    
+     
+    @PostConstruct
+    public void setPersistentClass() {
+        super.setPersistentClass((Class&lt;T&gt;) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+    
+    
+
+}
+
+</ui:composition>

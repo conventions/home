@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+     &lt;!-- push this managed bean in history stack with findState when page is rendered, 
+       this is the clientSide way to push a bean in the historyStack --&gt; 
+       &lt;framework:statePusher mbean="\#{trackablePersonMBean2}" state="\#{findState}"/&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Trackable MBean2&lt;/h1&gt;
+                    &lt;center&gt;
+                        &lt;p:panel id="trackablePanel" style="overflow: auto;margin-top: 50px"&gt;
+                            &lt;p:dataTable value="\#{trackablePersonMBean2.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex"
+                                         rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,20,30"&gt;
+                                  &lt;p:ajax event="page" onstart="block('div[id$=table]','paging...')" oncomplete="unblock('div[id$=table]')"/&gt;
+                                  &lt;p:ajax event="sort" onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
+                                  &lt;p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]')"/&gt;
+                               
+                                &lt;p:column  sortBy="\#{row.name}" filterBy="\#{row.name}" filterEvent="enter"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Name
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.name}"/&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" filterEvent="enter"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Lastname
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.lastname}"/&gt;
+                                &lt;/p:column&gt;
+
+                                &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"  filterStyle="width:50px"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Age
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.age}"/&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column headerText="Created" sortBy="\#{row.createDate}" &gt;
+                                    &lt;h:outputText value="\#{row.createDate}"&gt;
+                                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                                    &lt;/h:outputText&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column headerText="Updated" sortBy="\#{row.updateDate}" &gt;
+                                    &lt;h:outputText value="\#{row.updateDate}"&gt;
+                                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                                    &lt;/h:outputText&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column style="width: 40px"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Edit
+                                    &lt;/f:facet&gt;
+                                    &lt;div align="center"&gt;
+                                        &lt;framework:editLink  mbean="\#{trackablePersonMBean2}" row="\#{row}" /&gt;
+                                    &lt;/div&gt;
+                                &lt;/p:column&gt;
+                                &lt;f:facet name="footer"&gt;
+                                     &lt;framework:tableFooter mbean="\#{trackablePersonMBean2}" /&gt;
+                                &lt;/f:facet&gt;
+                            &lt;/p:dataTable&gt;
+                            &lt;span class="homeText"&gt; - filter columns only fire event when enter key is pressed to avoid quering on large datasets multiple times &lt;/span&gt;
+                            
+                        &lt;/p:panel&gt;
+                    &lt;/center&gt;
+</ui:composition>

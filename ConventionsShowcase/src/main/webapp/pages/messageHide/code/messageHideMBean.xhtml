@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package framework.showcase.controller;
+
+import javax.faces.bean.ManagedBean;
+import jsf.crud.framework.util.MessagesController;
+import org.primefaces.context.RequestContext;
+
+/**
+ *
+ * @author Rafael M. Pestano Apr 3, 2011 8:27:59 PM
+ */
+@ManagedBean(name="messageHideMBean")
+public class MessageHideMBean {
+    
+    
+    public void addInfo(){
+        MessagesController.addInfo("info message");
+    }
+    public void addWarn(){
+        MessagesController.addWarn("warn message");
+    }
+    public void addError(){
+        MessagesController.addError("error message");
+    }
+}
+
+</ui:composition> 

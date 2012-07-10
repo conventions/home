@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+&lt;ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsf/composite/components/conventions"
+    template="../../templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Friends of \#{personConversationMBean.entity.name}&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="friendForm"&gt;
+                Conversation id: \#{personConversationMBean.conversation.id}
+                &lt;p:panel id="panelFriend" style="width: 650px;min-height:300px " header="Friends"&gt;
+                    &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                        &lt;h:panelGrid columns="4"&gt;
+                            &lt;c:saveButton  mbean="\#{personConversationMBean}" process=":friendForm:panelFriend" ajax="true"
+                                                   update=":friendForm:panelFriend" oncomplete="hideMsg(args)"/&gt;
+                            &lt;p:commandButton value="Back" action="\#{personConversationMBean.backEdit}" immediate="true"/&gt;
+                            &lt;p:commandButton value="Go Home" action="\#{personConversationMBean.back}" immediate="true"/&gt;
+                        &lt;/h:panelGrid&gt;
+                        &lt;c:messageHide messageId=":friendForm:msg"/&gt;
+                    &lt;/center&gt;
+                    &lt;p:dataTable value="\#{personConversationMBean.entity.friends}" widgetVar="tableVar" id="table" var="row" emptyMessage="You have no friends"
+                                 rowIndexVar="rowIndex" 
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;f:facet name="header"&gt;
+                             &lt;p:commandButton value="Add Friends"
+                                             action="\#{personConversationMBean.initPersonSelectionModal}"
+                                             update=":findFriendDlg:findFriendDlg_panel"
+                                             oncomplete="findFriendDlg.show()"/&gt;
+                        &lt;/f:facet&gt;
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}" filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+
+                        &lt;/p:column&gt;
+                        &lt;p:column style="width: 40px"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Remove
+                            &lt;/f:facet&gt;
+                            &lt;div align="center"&gt;
+                                &lt;c:removeLink mbean="\#{personConversationMBean}" row="\#{row}"  modal="removeFriendModal"/&gt;
+                            &lt;/div&gt;
+                        &lt;/p:column&gt;
+                        &lt;f:facet name="footer"&gt;
+                            &lt;c:tableFooter value="\#{personConversationMBean.entity.numFriends}"
+                                           renderAddButton="false"
+                                           /&gt;
+                        &lt;/f:facet&gt;
+                    &lt;/p:dataTable&gt;
+                &lt;/p:panel&gt;
+                &lt;c:modalRemoval mbean="\#{personConversationMBean}"
+                                        update=":friendForm:removeFriendModal:msgRemove :friendForm:table"
+                                        oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                        persistentRemove="false"
+                                        id="removeFriendModal"
+                                        height="200"
+                                        widgetVar="removeFriendModal"&gt;
+                    &lt;p:inputText value="\#{personConversationMBean.entityAux.name}" disabled="true"/&gt;
+                &lt;/c:modalRemoval&gt;
+            &lt;/h:form&gt;
+            &lt;c:modal id="findFriendDlg" header="Find Friends"
+                             widgetVar="findFriendDlg"
+                             mbean="\#{personSelectionModalMBean}"
+                             closeListener="\#{personSelectionModalMBean.clearSelection}"
+                             update=":friendForm:panelFriend"
+                             invokerName="personConversationMBean"
+                             &gt;
+                    &lt;p:dataTable value="\#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="\#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowKey="\#{row.id}"
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+                        &lt;/p:column&gt;
+                         &lt;f:facet name="footer"&gt;
+                             &lt;c:tableFooter mbean="\#{personSelectionModalMBean}" renderAddButton="false" /&gt;
+                          &lt;/f:facet&gt;
+                    &lt;/p:dataTable&gt;
+            &lt;/c:modal&gt;
+        &lt;/div&gt;
+    &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+            </ui:composition>

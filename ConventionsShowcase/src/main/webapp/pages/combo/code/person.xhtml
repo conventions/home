@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   package com.jsf.conventions.showcase.model;
+
+
+import com.jsf.conventions.model.VersionatedBaseEntityLong;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
+
+
+/**
+ * 
+ * @author Rafael M. Pestano
+ * @Date Jan 10, 2011
+ */
+@Entity
+@Table(name = "person")
+@SequenceGenerator(allocationSize = 1, name = "seq_person", sequenceName = "seq_person")
+public class Person extends VersionatedBaseEntityLong implements Serializable{
+
+    private static final long serialVersionUID = -3065107295253073402L;
+    private String name;
+    private String lastname;
+    private Integer age;
+    private List&lt;Person&gt; friends;
+
+    public Person() {
+    }
+
+    public Person(String name, String lastname, Integer age) {
+        this.name = name;
+        this.lastname = lastname;
+        this.age = age;
+    }
+    
+   //getter &amp; setters
+
+    
+    /**
+     * used as label in selectItem
+     */
+    @Override
+    @Transient
+    public String getLabel() {
+        return this.getName();
+    }
+     
+    
+    
+}
+
+</ui:composition>

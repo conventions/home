@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+&lr;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+      xmlns:fn="http://conventions.com/fnc"
+      xmlns:p="http://primefaces.org/ui"&gt;
+
+    &lt;f:view contentType="text/html"&gt;
+
+        &lt;h:head&gt;
+            &lt;title&gt;\#{title}&lt;/title&gt;
+            &lt;meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/&gt;
+            &lt;ui:insert name="head"&gt;&lt;/ui:insert&gt;
+        &lt;/h:head&gt;
+
+        &lt;h:body onload="if (windown.onload) {onload()}" &gt;
+            &lt;h:outputScript library="js" name="blockUI.js" target="head"/&gt;
+            &lt;h:outputStylesheet library="css" name="layout.css" target="head"/&gt; 
+            
+            &lt;p:ajaxStatus rendered="\#{empty showAjaxStatus or showAjaxStatus}" styleClass="ajaxStatus" &gt;
+                &lt;f:facet name="start"&gt;
+                    &lt;h:outputText value="\#{empty statusMessage ? 'Loading...':statusMessage}" style="background-color: white;font-size: 12px;color: black;" /&gt;
+                &lt;/f:facet&gt;
+                &lt;f:facet name="complete"&gt;
+                    &lt;h:outputText value="" /&gt;
+                &lt;/f:facet&gt;
+            &lt;/p:ajaxStatus&gt;
+              &lt;pe:layout id="all" widgetVar="mainLayout" fullPage="true"  stateCookie="\#{not empty keepLayoutState and keepLayoutState}"&gt;
+                  &lt;pe:layoutPane position="north" resizable="true" collapsible="true" size="\#{empty stateController.stateItens ? '125':'155'}" minSize="125" rendered="\#{empty showTopUnit or showTopUnit}" &gt;
+                      &lt;h:form id="headerForm"&gt;
+                          &lt;ui:insert name="headerForm"/&gt;
+                          &lt;div id="before_logo"   class="ui-widget ui-widget-header ui-corner-all" &gt;
+                              &lt;ui:insert name="beforeLogo"/&gt;
+                              &lt;div id="logo" style="margin-top: -15px" &gt;
+                                  &lt;h1&gt;\#{logo}&lt;/h1&gt;
+                                  &lt;ui:insert name="logo"/&gt;
+                              &lt;/div&gt;
+                              &lt;ui:insert name="afterLogo"/&gt;
+                          &lt;/div&gt;
+                          &lt;div style="width:100%;overflow: hidden;" &gt;
+                              &lt;div align="center" id="menu" class="ui-widget ui-widget-content ui-corner-all" style="width:99%;padding:0 5px 0 5px"&gt;
+                                  &lt;table width="100%"&gt;
+                                      &lt;tr&gt;
+                                          &lt;td width="50%" align="left"&gt;
+                                              &lt;ui:insert name="topLeftMenu"/&gt;
+                                          &lt;/td&gt;
+                                          &lt;td width="50%" align="right"&gt;
+                                                &lt;ui:insert name="topRightMenu"/&gt;    
+                                         &lt;/td&gt;
+                                      &lt;/tr&gt;
+                                  &lt;/table&gt;
+                              &lt;/div&gt;
+                          &lt;/div&gt;
+                          &lt;framework:stateItens id="historyStack" /&gt;
+                      &lt;/h:form&gt;  
+                  &lt;/pe:layoutPane&gt;
+                  &lt;pe:layoutPane position="center" style="margin-top: \#{not empty stateController.stateItens ? '0': '-15px'}"&gt;
+                      &lt;ui:insert name="topCenter"/&gt;
+                      &lt;div id="content" class="ui-widget"&gt;
+                          &lt;div class="post"&gt;
+                              &lt;p:outputPanel id="mainOutputPanel"&gt;
+                                  &lt;ui:insert name="content"&gt;...&lt;/ui:insert&gt;
+                                  &lt;style type="text/css"&gt;
+                                    .even-row{
+                                        background-color: \#{themeMBean.evenRow} !important;
+                                        background-image: none;
+                                        }
+                                  &lt;/style&gt;
+                              &lt;/p:outputPanel&gt;
+                          &lt;/div&gt;
+                      &lt;/div&gt;
+                        
+                      &lt;ui:insert name="centerBottom"/&gt;
+                        
+                  &lt;/pe:layoutPane&gt;
+                  
+                  
+                  &lt;pe:layoutPane position="west" header="\#{leftHeader}" resizable="true" collapsible="true" size="\#{empty westSize ? 180 : westSize}" rendered="\#{empty showLeftUnit or showLeftUnit}"&gt;
+                      &lt;ui:insert name="left"/&gt;
+                                   
+                  &lt;/pe:layoutPane&gt;     
+                  
+                  &lt;pe:layoutPane position="south" collapsible="true" size="\#{empty southSize ? 60 : southSize}" resizable="true" &gt;
+                      &lt;div id="footer" class="ui-widget ui-widget-header ui-corner-all" &gt;
+                          &lt;ui:insert name="footer"/&gt;
+                     &lt;/div&gt;
+                  &lt;/pe:layoutPane&gt;
+                               
+              &lt;/pe:layout&gt;  
+              &lt;ui:insert name="popup"/&gt;
+                  
+        &lt;/h:body&gt;
+       &lt;ui:insert name="outer"/&gt;
+    &lt;/f:view&gt;
+
+
+
+</ui:composition>

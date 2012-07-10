@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="securityHome.xhtml"&gt;
+    &lt;!-- securityPage component will check if current user has access to this page(it will get current user roles in sessionMap  
+  in the key 'userRoles', which must be a list&lt;String&gt;) if not will navigate user to the outcome and show the message as a fataL FacesMessage--!&gt;
+        &lt;framework:securityPage rolesAllowed="admin" message="Only admin can access that page." outcome="securityList"/&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;\#{securityMBean.insertState ? 'Create':'Edit'}  Person&lt;/h1&gt;
+        &lt;div  class="entry"&gt;
+                &lt;center&gt;
+                    &lt;p:panel id="panelAdd" style="width: 300px;min-height:200px " header="\#{securityMBean.insertState ? 'Create Person': 'Edit Person' }"&gt;
+                        &lt;framework:backButton image="back_img"/&gt;
+                         &lt;h:panelGrid columns="2"&gt;
+                            &lt;framework:label value="Name" requiredStyle="true" /&gt;
+                            &lt;framework:inputText value="\#{securityMBean.entity.name}" required="true" renderMessage="true"
+                                            requiredMessage="the name is required" /&gt; 
+                            &lt;framework:label value="Lastname" requiredStyle="true" /&gt;
+                            &lt;framework:inputText value="\#{securityMBean.entity.lastname}" required="true" renderMessage="true"
+                                            requiredMessage="the lastname is required" /&gt;
+                            &lt;framework:label value="Age" requiredStyle="true" /&gt; 
+                            &lt;p:spinner max="100" id="age"  size="17" min="0" stepFactor="1" value="\#{securityMBean.entity.age}"/&gt;
+                         &lt;/h:panelGrid&gt;
+                        &lt;h:panelGrid columns="3" cellpadding="5px"&gt;
+                            &lt;framework:saveButton  mbean="\#{securityMBean}" process="securityForm:panelAdd"
+                                                   update="securityForm:msg"  oncomplete="hideMsg(args)"/&gt;
+                            &lt;framework:resetButton mbean="\#{securityMBean}" update="securityForm:historyStack:historyPanel securityForm:panelAdd"  /&gt;
+                            &lt;framework:messageHide messageId="securityForm:msg"/&gt;
+                        &lt;/h:panelGrid&gt;
+                    &lt;/p:panel&gt;
+                &lt;/center&gt;
+        &lt;/div&gt;
+&lt;/ui:composition&gt;
+</ui:composition>

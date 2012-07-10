@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        &lt;ui:param name="defaultUpdate" value=":historyForm:pageControl"/&gt;
+        &lt;h:form id="historyForm"&gt;
+            &lt;p:outputPanel autoUpdate="true" style="text-align: right" layout="block"&gt;
+                &lt;framework:addButton  value="New Person" mbean="\#{ajaxStateMBean}" style="visibility: \#{empty ajaxStateMBean.beanState or ajaxStateMBean.findState ? 'visible':'hidden'}"/&gt;
+        
+                &lt;h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left"&gt;Ajax History Stack Home&lt;/h1&gt;
+            &lt;/p:outputPanel&gt;   
+            &lt;div class="entry"&gt;
+                &lt;p:outputPanel id="pageControl"&gt;
+                    &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                    &lt;framework:messageHide messageId=":historyForm:msg" timeout="1600" /&gt;
+                    &lt;p:outputPanel rendered="\#{empty ajaxStateMBean.beanState or ajaxStateMBean.initState}"&gt;
+                        &lt;p:commandButton value="Go List" action="\#{ajaxStateMBean.setFindState}" update=":historyForm:pageControl"/&gt;
+                    &lt;/p:outputPanel&gt;
+                    &lt;p:outputPanel rendered="\#{ajaxStateMBean.findState}"&gt;
+                        &lt;ui:include src="/pages/history/ajaxListUser.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt;
+                    &lt;p:outputPanel rendered="\#{ajaxStateMBean.insertState or ajaxStateMBean.updateState}"&gt;
+                        &lt;ui:include src="/pages/history/ajaxAddUser.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt;
+                    &lt;p:outputPanel rendered="\#{ajaxStateMBean.friendState}"&gt;
+                        &lt;ui:include src="/pages/history/ajaxAddFriend.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt;
+                &lt;/p:outputPanel&gt;
+                &lt;br/&gt;
+                &lt;span class="homeText"&gt;
+                    - Ajaxyfied history stack to avoid full page loads 
+                &lt;/span&gt;
+
+            &lt;/div&gt;
+        &lt;/h:form&gt;   
+    &lt;/ui:define&gt;
+    
+    &lt;ui:define name="popup"&gt;
+            &lt;framework:modal id="findFriendDlg" header="Find Friends"
+                             widgetVar="findFriendDlg"
+                             mbean="\#{personSelectionModalMBean}"
+                             closeListener="\#{personSelectionModalMBean.clearSelection}" 
+                             update=":historyForm:trackablePanelFriend"
+                             autoUpddate="false"
+                             &gt;
+                    
+                    &lt;p:dataTable value="\#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="\#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowKey="\#{row.id}"
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+                        &lt;/p:column&gt;
+                    &lt;/p:dataTable&gt;
+            &lt;/framework:modal&gt;
+       
+    &lt;/ui:define&gt;
+ &lt;/ui:composition&gt;
+</ui:composition>

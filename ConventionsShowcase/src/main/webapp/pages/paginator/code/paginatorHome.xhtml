@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+   &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Paginator Home&lt;/h1&gt;
+       &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Paginator Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+
+            &lt;h:form id="paginatorForm"&gt;
+                &lt;p:remoteCommand name="updateRowCount" update="paginatorForm:countPanel" process="@none"/&gt;
+                &lt;p:outputPanel layout="block" style="float: right" id="countPanel"&gt;
+                    Records Found: \#{paginatorMBean.paginator.rowCount}
+                &lt;/p:outputPanel&gt;
+                &lt;p:dataTable value="\#{paginatorMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
+                             rowIndexVar="rowIndex"
+                             lazy="true"
+                             rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                             paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20,30" &gt;
+
+                    &lt;p:ajax event="page" onstart="block('div[id$=table]','paging...');" oncomplete="unblock('div[id$=table]')" /&gt;
+                    &lt;p:ajax event="sort" onstart="block('div[id$=table]','sorting...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
+                    &lt;p:ajax event="filter" process="@this" onstart="block('div[id$=table]','filtering...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  });updateRowCount();" /&gt;
+                    &lt;f:facet name="header"&gt;
+                        &lt;center&gt;
+                            &lt;p:commandButton value="Load Data" action="\#{paginatorMBean.initPaginator}" disabled="\#{not empty paginatorMBean.paginator}" process="@this" update="@form" oncomplete="updateRowCount();" /&gt;
+                        &lt;/center&gt;
+                    &lt;/f:facet&gt;
+                    &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" &gt;
+                        &lt;f:facet name="header"&gt;
+                            Name
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.name}"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" &gt;
+                        &lt;f:facet name="header"&gt;
+                            Lastname
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.lastname}"/&gt;
+                    &lt;/p:column&gt;
+
+                    &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}" filterStyle="width:50px" style="width: 50px" &gt;
+                        &lt;f:facet name="header"&gt;
+                            Age
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.age}"/&gt;
+
+                    &lt;/p:column&gt;
+                    &lt;p:column headerText="Created" sortBy="\#{row.createDate}" &gt;
+                        &lt;h:outputText value="\#{row.createDate}"&gt;
+                            &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                        &lt;/h:outputText&gt;
+
+                    &lt;/p:column&gt;
+                    &lt;p:column headerText="Updated" sortBy="\#{row.updateDate}" &gt;
+                        &lt;h:outputText value="\#{row.updateDate}"&gt;
+                            &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                        &lt;/h:outputText&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column headerText="Version" sortBy="\#{row.version}" &gt;
+                        &lt;h:outputText value="\#{row.version}"/&gt;
+                    &lt;/p:column&gt;
+                &lt;/p:dataTable&gt;
+            &lt;/h:form&gt;     
+
+        &lt;/div&gt;
+        &lt;span class="homeText"&gt;True pagination, sort and filtering made easy with Conventions Framework.&lt;/span&gt;
+</ui:composition>

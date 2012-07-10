@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.jsf.conventions.showcase.controller;
+
+import com.jsf.conventions.bean.AbstractModalMBean;
+import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.showcase.service.PersonService;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
+
+ /**
+ * 
+ * @author rmpestano
+ */
+@WindowScoped
+@Named(value = "personSelectionModalMBean2")
+public class PersonSelectionModalMBean2 extends AbstractModalMBean&lt;Person&gt; implements Serializable {
+
+
+    private Person[] selectedPeople;
+    private List&lt;Person&gt; list;
+    public static final String MODAL_NAME = "personSelectionModal2";
+    
+    public PersonSelectionModalMBean2() {
+    }
+
+    /**
+     * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
+     * @param personService
+     */
+    @Inject
+    public void setPersonService(PersonService personService) {
+        super.setBaseService(personService);
+    }
+
+    public PersonService getPersonService(){
+        return (PersonService)super.getBaseService();
+    }
+    
+    @PostConstruct
+    @Override
+    public void init(){
+        Person p = new Person();
+        p.setAge(20);
+        list = getPersonService().findByExample(p);
+    }
+
+
+    public Person[] getSelectedPeople() {
+        return selectedPeople;
+    }
+
+    public void setSelectedPeople(Person selectedPeople[]) {
+        this.selectedPeople = selectedPeople;
+    }
+
+    public List&lt;Person&gt; getList() {
+        return list;
+    }
+
+    public void setList(List&lt;Person&gt; list) {
+        this.list = list;
+    }
+
+    @Override
+    public Object modalCallback(){
+        return selectedPeople;
+    }
+
+}
+</ui:composition> 

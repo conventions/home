@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ package com.jsf.conventions.showcase.converter;
+
+import com.jsf.conventions.converter.AbstractBaseConverter;
+import com.jsf.conventions.qualifier.HibernateService;
+import com.jsf.conventions.showcase.service.PersonService;
+import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import org.apache.myfaces.extensions.cdi.core.api.Advanced;
+
+/**
+ *
+ * @author rmpestano Dec 25, 2011 12:32:50 PM
+ */
+@Advanced
+@FacesConverter(value="personConverter")
+public class PersonConverter extends AbstractBaseConverter {
+    
+    @Inject 
+    public void setPersonService(PersonService personService){
+        super.setBaseService(personService);
+    }
+	
+}
+</ui:composition>

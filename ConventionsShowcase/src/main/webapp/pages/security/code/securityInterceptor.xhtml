@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ /*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.jsf.conventions.showcase.security;
+
+import com.jsf.conventions.security.SecurityMethodInterceptor;
+import com.jsf.conventions.qualifier.SecurityMethod;
+import java.util.List;
+import javax.faces.context.FacesContext;
+import javax.interceptor.Interceptor;
+
+/**
+ *
+ * @author rmpestano Nov 20, 2011 9:46:59 PM
+ */
+
+@SecurityMethod
+@Interceptor
+public class ShowcaseSecurityInterceptor extends SecurityMethodInterceptor{
+
+    /**
+     * this method is responsible for deciding if current user has permition 
+     * to execute a method
+     * 
+     * @param rolesAllowed roles passed in the method
+     * @return true if user has permition, false otherwise
+     */
+    @Override
+    public boolean checkUserPermissions(String[] rolesAllowed) {
+        //user role(s) should be extracted from current logged user
+        //we just put the role in the session for testing purposes
+        List&lt;String&gt; userRoles = (List&lt;String&gt;) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userRoles");
+        if(userRoles == null || userRoles.isEmpty()){
+            return false;
+        }
+        for (String role : rolesAllowed) {
+            if(userRoles.contains(role)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+}
+
+
+
+</ui:composition>

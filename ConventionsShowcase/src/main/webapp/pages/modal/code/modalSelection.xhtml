@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+        &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Modal Selection Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;p&gt;- One managed bean can get data from multiple modals.&lt;/p&gt;
+            &lt;p&gt;- modal reuse, one modal can be called by multiple managed beans.&lt;/p&gt;
+           &lt;h:form id="personSelectionForm"&gt;
+                &lt;p:outputPanel id="pageControl"&gt;
+                    &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                    
+                    &lt;p:panel style="overflow: auto;" &gt;
+                        &lt;p:dataTable value="\#{personSelectionMBean.list}" 
+                                     widgetVar="tableVar" id="table" var="row" 
+                                     emptyMessage="No person found"
+                                     rowIndexVar="rowIndex"
+                                     rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                     rows="5" paginatorPosition="bottom"
+                                     paginator="true" paginatorTemplate="{CurrentPageReport} 
+                                     {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                                     {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,20,30"&gt;
+                            &lt;f:facet name="header"&gt;  
+                                    &lt;h:panelGrid columns="1" &gt;
+                                        &lt;h:column&gt;
+                                            &lt;p:commandButton value="Find Person from modal 1" 
+                                                             action="\#{personSelectionMBean.initPersonSelectionModal}"
+                                                             update=":findPersonDlg:findPersonDlg_panel" 
+                                                             oncomplete="findPersonDlg.show();;tablevar1.getPaginator().setPage(0);" 
+                                                             icon="ui-icon ui-icon-zoomin"/&gt;
+                                            &lt;p:commandButton value="Find Person from modal 2" 
+                                                             update=":findPersonDlg2:findPersonDlg2_panel" 
+                                                             oncomplete="findPersonDlg2.show();tablevar2.getPaginator().setPage(0);" 
+                                                             icon="ui-icon ui-icon-zoomin"/&gt;
+                                        &lt;/h:column&gt;
+                                    &lt;/h:panelGrid&gt;
+                            &lt;/f:facet&gt;  
+                            &lt;p:column sortBy="\#{row.name}"&gt;
+                                &lt;f:facet name="header"&gt;
+                                    Name
+                                &lt;/f:facet&gt;
+                                &lt;h:outputText value="\#{row.name}"/&gt;
+
+                            &lt;/p:column&gt;
+                            &lt;p:column sortBy="\#{row.lastname}"&gt;
+                                &lt;f:facet name="header"&gt;
+                                    Lastname
+                                &lt;/f:facet&gt;
+                                &lt;h:outputText value="\#{row.lastname}"/&gt;
+                            &lt;/p:column&gt;
+
+                            &lt;p:column sortBy="\#{row.age}"&gt;
+                                &lt;f:facet name="header"&gt;
+                                    Age
+                                &lt;/f:facet&gt;
+                                &lt;h:outputText value="\#{row.age}"/&gt;
+                            &lt;/p:column&gt;
+                            &lt;p:column &gt;
+                                &lt;f:facet name="header"&gt;
+                                    Remove
+                                &lt;/f:facet&gt;
+                                &lt;div align="center"&gt;
+                                    &lt;framework:removeLink  mbean="\#{personSelectionMBean}" 
+                                                           row="\#{row}"
+                                                           modal="removeGridPersonModal"
+                                                           renderIcon="false" /&gt;
+                                &lt;/div&gt;
+                            &lt;/p:column&gt;
+                        &lt;/p:dataTable&gt;
+                    &lt;/p:panel&gt;   
+                    
+                &lt;/p:outputPanel&gt;
+                &lt;framework:messageHide messageId=":personSelectionForm:msg" /&gt;
+                
+                &lt;framework:modalRemoval mbean="\#{personSelectionMBean}"
+                                        update=":personSelectionForm:pageControl :personSelectionForm:msg"
+                                        oncomplete="removeGridPersonModal.hide();hideMsg(args);"
+                                        persistentRemove="false"
+                                        widgetVar="removeGridPersonModal"&gt;
+                &lt;/framework:modalRemoval&gt;
+            &lt;/h:form&gt;
+            &lt;ui:include src="modals.xhtml"/&gt;
+    &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+</ui:composition> 

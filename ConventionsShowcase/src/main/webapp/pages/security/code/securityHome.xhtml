@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:conventions="http://conventions.com/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Security Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="securityForm"&gt;
+                &lt;framework:historyStackLinks id="securityHistoryStack"/&gt;
+                     &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                
+                &lt;h:panelGrid columns="2" cellspacing="5"&gt;
+                    &lt;h:outputText value="Change role:"/&gt;
+                    &lt;p:selectOneMenu value="\#{securityMBean.currentRole}"&gt;
+                        &lt;p:ajax event="change" process="@this" listener="\#{securityMBean.changeProfile}" oncomplete="document.forms[0].submit()"/&gt;
+                        &lt;f:selectItem itemLabel="none" itemValue=""/&gt;
+                        &lt;f:selectItem itemLabel="guest" itemValue="guest"/&gt;
+                        &lt;f:selectItem itemLabel="admin" itemValue="admin"/&gt;
+                        &lt;f:selectItem itemLabel="secret" itemValue="secret"/&gt;
+                    &lt;/p:selectOneMenu&gt;
+                     &lt;h:outputText value="Current Role:"/&gt;
+                     &lt;h:outputText style="font-weight: bolder;text-decoration: underline" value="\#{empty securityMBean.currentRole ? 'none': securityMBean.currentRole}"/&gt;
+                &lt;/h:panelGrid&gt;
+                &lt;br/&gt;
+                &lt;p:commandLink value="Go to list of persons (roles allowed - guest, admin)" action="\#{securityMBean.goList}" update="msg" rendered="\#{securityMBean.initState or securityMBean.secretState}"/&gt; &lt;br/&gt;
+                    &lt;conventions:securityArea rolesAllowed="secret"&gt;
+                        &lt;p:commandLink value="Go to Security Area Component (roles allowed - secret)" action="\#{securityMBean.goSecretArea}" rendered="\#{securityMBean.secretState}"/&gt; 
+                    &lt;/conventions:securityArea&gt;
+                &lt;ui:insert/&gt;
+            &lt;/h:form&gt;  
+             &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+</ui:composition>

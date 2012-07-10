@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+        &lt;center&gt;
+            &lt;h:form&gt;
+
+                &lt;h:link value="Unexpected error - click here to go home" 
+                        style="color: red;text-transform: uppercase"
+                        outcome="home.faces"/&gt;
+                &lt;br/&gt;
+                
+                &lt;p:panel header="Error Detail" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error"&gt;
+                     
+                     Error &lt;span style="color: red;"&gt;\#{errorName}&lt;/span&gt;  
+                    &lt;p:tabView &gt;  
+                        &lt;p:tab title="Message"&gt;  
+                            &lt;h:panelGrid columns="2"&gt;  
+                                &lt;h:outputLabel value="Error message:" /&gt;  
+                                &lt;h:outputText value="\#{errorMessage}" style="font-size: 1.2em;color:navy;" /&gt;  
+                            &lt;/h:panelGrid&gt;  
+
+                        &lt;/p:tab&gt;  
+                        &lt;p:tab title="Detail"&gt;  
+                            &lt;div style="overflow: auto; height: 300px; width: 700px;"&gt;  
+                                \#{stacktrace}
+                            &lt;/div&gt;  
+                        &lt;/p:tab&gt;  
+                    &lt;/p:tabView&gt;  
+                &lt;/p:panel&gt;  
+            &lt;/h:form&gt;
+        &lt;/center&gt;
+</ui:composition>

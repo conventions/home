@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+
+    <ui:define name="content">
+
+        <h1 class="title ui-widget-header ui-corner-all">Paginator Home</h1>
+        <div class="entry">
+
+            <h:form id="paginatorForm">
+                
+                <p:remoteCommand name="updateRowCount" update="paginatorForm:countPanel" process="@none"/>
+                <p:outputPanel layout="block" style="float: right" id="countPanel">
+                    Records Found: #{paginatorMBean.paginator.rowCount}
+                </p:outputPanel>
+                <p:dataTable value="#{paginatorMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
+                             rowIndexVar="rowIndex"
+                             lazy="true"
+                             rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                             paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20,30" >
+
+                    <p:ajax event="page" onstart="block('div[id$=table]','paging...');" oncomplete="unblock('div[id$=table]')" />
+                    <p:ajax event="sort" onstart="block('div[id$=table]','sorting...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
+                    <p:ajax event="filter" process="@this" onstart="block('div[id$=table]','filtering...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  });updateRowCount();" />
+                    <f:facet name="header">
+                        <center>
+                            <p:commandButton value="Load Data" action="#{paginatorMBean.initPaginator}" disabled="#{not empty paginatorMBean.paginator}" process="@this" update="@form" oncomplete="updateRowCount();" />
+                        </center>
+                    </f:facet>
+                    <p:column sortBy="#{row.name}" filterBy="#{row.name}" >
+                        <f:facet name="header">
+                            Name
+                        </f:facet>
+                        <h:outputText value="#{row.name}"/>
+                    </p:column>
+                    <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" >
+                        <f:facet name="header">
+                            Lastname
+                        </f:facet>
+                        <h:outputText value="#{row.lastname}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{row.age}" filterBy="#{row.age}" filterStyle="width:50px" style="width: 50px" >
+                        <f:facet name="header">
+                            Age
+                        </f:facet>
+                        <h:outputText value="#{row.age}"/>
+
+                    </p:column>
+                    <p:column headerText="Created" sortBy="#{row.createDate}" >
+                        <h:outputText value="#{row.createDate}">
+                            <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
+
+                    </p:column>
+                    <p:column headerText="Updated" sortBy="#{row.updateDate}" >
+                        <h:outputText value="#{row.updateDate}">
+                            <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Version" sortBy="#{row.version}" >
+                        <h:outputText value="#{row.version}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>     
+
+        </div>
+        <center><span class="homeText">True pagination, sort and filtering made easy with Conventions Framework.</span></center>
+
+        <script type="text/javascript">
+            jQuery(function() {
+                resetNorthSize();
+            });
+        </script>
+    </ui:define>
+
+    <ui:define name="source">
+        <h3>Source</h3>
+
+        <p:tabView >
+            <p:tab title="PaginatorMBean.java">
+                <pre name="code" class="xml">
+                         <ui:include src="code/paginatorMBean.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="paginatorHome.xhtml">
+                <pre name="code" class="xml">
+                         <ui:include src="code/paginatorHome.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView>  
+    </ui:define>
+</ui:composition>

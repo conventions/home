@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        
+        <h1 class="title ui-widget-header ui-corner-all">#{msg.internationalization}</h1>
+        <div class="entry">
+            <h:form id="i18nForm">
+                
+                <h:panelGrid columns="2">
+                    <h:outputText value="Language:"/>
+                    <p:selectOneMenu value="#{simpleI18nMBean.selectedLang}" style="width:100px;text-align: left" >
+                       <f:selectItem itemValue="#{null}" itemLabel="" />
+                       <f:selectItem itemValue="en" itemLabel="English" />
+                       <f:selectItem itemValue="pt" itemLabel="Português" />
+                       <p:ajax update="@form :leftMenu" listener="#{simpleI18nMBean.changeLanguage}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLang}" for="simpleMsg" value="#{msg.simpleLabel}:"/>
+                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLang}" id="simpleMsg" value="#{simpleI18nMBean.simpleHello}"/>
+                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLang}" for="paramMsg" value="#{msg.paramLabel}:"/>
+                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLang}" id="paramMsg" value="#{simpleI18nMBean.parametrizedHello}"/>
+                </h:panelGrid>
+            <br/>
+            <p:outputPanel styleClass="homeText" rendered="#{not empty simpleI18nMBean.selectedLang}">
+                      - #{msg.tip1} 
+                <br/> - #{msg.tip2} 
+                <br/> - #{msg.tip3} 
+                <br/> - #{msg.tip4} 
+            </p:outputPanel>
+            </h:form>
+              <h3>Source</h3>
+
+             <p:tabView >
+                <p:tab title="simpleI18nMBean.java">
+                    <pre name="code" class="xml">
+                               <ui:include src="code/simpleI18nMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="i18nHome.xhtml">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/i18nHome.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="bundle.properties">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/bundle.xhtml"/>  
+                    </pre>
+                </p:tab>
+            </p:tabView>
+        </div>
+        <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+    </ui:define>
+</ui:composition>

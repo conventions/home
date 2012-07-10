@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:conventions="http://conventions.com/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        <framework:statePusher mbean="#{securityMBean}" state="#{initState}"/>
+        <h1 class="title ui-widget-header ui-corner-all">Security Home</h1>
+        <div class="entry">
+            <h:form id="securityForm">
+                     <center>
+                        <p:messages id="msg"/>
+                    </center>
+                
+                <h:panelGrid columns="2" cellspacing="5">
+                    <h:outputText value="Change role:"/>
+                    <p:selectOneMenu value="#{securityMBean.currentRole}">
+                        <p:ajax event="change" process="@this" listener="#{securityMBean.changeProfile}" oncomplete="document.forms[0].submit()"/>
+                        <f:selectItem itemLabel="none" itemValue=""/>
+                        <f:selectItem itemLabel="guest" itemValue="guest"/>
+                        <f:selectItem itemLabel="admin" itemValue="admin"/>
+                        <f:selectItem itemLabel="secret" itemValue="secret"/>
+                    </p:selectOneMenu>
+                     <h:outputText value="Current Role:"/>
+                     <h:outputText style="font-weight: bolder;text-decoration: underline" value="#{empty securityMBean.currentRole ? 'none': securityMBean.currentRole}"/>
+                </h:panelGrid>
+                <br/>
+                <p:commandButton value="Go to list of persons (roles allowed - guest, admin)" action="#{securityMBean.goList}" update="msg" rendered="#{securityMBean.initState or securityMBean.secretState}"/> <br/>
+                    <conventions:securityArea rolesAllowed="secret">
+                        <p:commandButton value="Go to Security Area Component (roles allowed - secret)" action="#{securityMBean.goSecretArea}" rendered="#{securityMBean.secretState}"/> 
+                    </conventions:securityArea>
+                <ui:insert/>
+            </h:form>  
+            <br/>
+            <span class="homeText">
+                - easy to implement and powerful method authorization solution based on top of CDI interceptor.<br/>
+                - you only need to implement the checkPermissions business logic and register a CDI interceptor in bean.xml which extends AbstractSecurityMethodInterceptor.<br/> 
+                - Hide page blocks based on user roles with SecurityArea component.<br/>
+                
+            </span>
+         
+        </div>
+        <script type="text/javascript">
+            jQuery(function() {
+                 historyNorthSize();
+              });
+        </script>
+    </ui:define>
+    
+    <ui:define name="source">
+        <h3>Source</h3>
+        <p:tabView >
+            <p:tab title="SecurityMBean.java">
+                <pre name="code" class="xml">
+                            <ui:include src="code/securityMBean.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="ShowcaseSecurityInterceptor.java">
+                <pre name="code" class="xml">
+                            <ui:include src="code/securityInterceptor.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="beans.xml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/beans.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="securityHome.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/securityHome.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="addUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/addUser.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="listUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/listUser.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="secret.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/secret.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="faces-config.xml">
+                <pre name="code" class="xml">
+                  <ui:include src="code/faces-config.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView> 
+    </ui:define>
+</ui:composition>

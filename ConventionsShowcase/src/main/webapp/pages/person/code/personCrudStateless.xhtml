@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    &lt;ui:define name="content"&gt;
+    &lt;h:form id="personCrudForm"&gt;
+        &lt;p:outputPanel autoUpdate="true" style="text-align: right" layout="block"&gt;
+            &lt;framework:addButton  value="New Person" mbean="\#{statelessPersonMBean}" style="visibility: \#{empty statelessPersonMBean.beanState or statelessPersonMBean.findState ? 'visible':'hidden'}"/&gt;
+            &lt;h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left"&gt;Stateless Person Home&lt;/h1&gt;
+        &lt;/p:outputPanel&gt;   
+        &lt;center&gt;
+            &lt;span class="homeText" style="font-family: arial; font-weight: bold"&gt; - Stateless Person Crud uses a stateless EJB with @PersistenceContext(type=Transaction) to control the hibernate session &lt;/span&gt;&lt;br/&gt;    
+            &lt;span class="homeText" style="font-family: arial;font-weight: bold"&gt; - It also uses &lt;h:outputText style="text-decoration: underline" value=" state oriented navigation "/&gt; to show the pages controlled by a &lt;h:outputText style="text-decoration: underline" value=" ViewAcessScoped Managed Bean"/&gt;.&lt;/span&gt;     
+        &lt;/center&gt;    
+        &lt;div class="entry"&gt;
+            &lt;p:outputPanel id="pageControl"&gt;
+                &lt;center&gt;
+                    &lt;p:messages id="msg"/&gt;
+                &lt;/center&gt;
+                &lt;p:outputPanel rendered="\#{empty statelessPersonMBean.beanState or statelessPersonMBean.findState}"&gt;
+                    &lt;ui:include src="listUserStl.xhtml"/&gt;
+                &lt;/p:outputPanel&gt;  
+                &lt;p:outputPanel rendered="\#{statelessPersonMBean.insertState or statelessPersonMBean.updateState}"&gt;
+                    &lt;ui:include src="addUserStl.xhtml"/&gt;
+                &lt;/p:outputPanel&gt; 
+                &lt;p:outputPanel rendered="\#{statelessPersonMBean.friendState}"&gt;
+                    &lt;ui:include src="addFriendStl.xhtml"/&gt;
+                &lt;/p:outputPanel&gt; 
+            &lt;/p:outputPanel&gt;
+            &lt;framework:messageHide messageId=":personCrudForm:msg" timeout="1600" /&gt;
+
+
+        &lt;/div&gt;
+    &lt;/h:form&gt;
+    &lt;/ui:define&gt;
+    &lt;ui:define name="popup"&gt;
+
+            &lt;framework:modal id="findFriendDlg" header="Find Friends"
+                             widgetVar="findFriendDlg"
+                             mbean="\#{personSelectionModalMBean}"
+                             closeListener="\#{personSelectionModalMBean.clearSelection}"
+                             update=":personCrudForm:panelFriend"
+                             invokerName="statelessPersonMBean"
+                             &gt;
+                    &lt;p:dataTable value="\#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="\#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowKey="\#{row.id}"
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;f:facet name="footer"&gt;
+                            &lt;framework:tableFooter mbean="\#{personSelectionModalMBean}" renderAddButton="false"/&gt;
+                        &lt;/f:facet&gt;
+                    &lt;/p:dataTable&gt;
+            &lt;/framework:modal&gt;
+    &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+            
+            </ui:composition>

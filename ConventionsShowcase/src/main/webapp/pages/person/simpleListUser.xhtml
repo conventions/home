@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+       <center>
+          <p:inplace widgetVar="inplace" label="" id="inplace" style="font-weight: bold;color: black;">
+                            <p:panel id="panelFilter" header="Seach Person"  style="font-weight: normal;margin: 15px;width: 730px;text-align: left">
+                                <center>
+                                    <h:panelGrid columns="2" style="text-align: right" >
+                                        <h:outputLabel for="filter_name" value="Name:" />
+                                        <p:inputText value="#{simpleMBean.paginator.filter.name}" id="filter_name" />
+                                        <h:outputLabel for="filter_lastname" value="Lastname:" />
+                                        <p:inputText value="#{simpleMBean.paginator.filter.lastname}" id="filter_lastname" />
+                                        <h:outputLabel value="Age:"/>
+                                        <framework:inputText numeric="true" value="#{simpleMBean.paginator.filter.age}"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" >
+                                        <framework:filterButton mbean="#{simpleMBean}" id="filter-bt" tableWidgetVar="tableVar" onclick="tableVar.getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
+                                                                    oncomplete="unblock('#simpleCrudForm\\:table')" onstart="block('#simpleCrudForm\\:table','filtering...')"/>
+                                            <p:commandButton value="Hide Filters" update="inplace"/>
+                                    </h:panelGrid>
+                                </center>
+                            </p:panel>
+                        </p:inplace> 
+           
+           <p:panel id="tablePanel" style="overflow: auto;">
+           <p:remoteCommand name="updateRowCount" process="@none" update="simpleCrudForm:table:tableFooter"/>    
+           <p:dataTable value="#{simpleMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        lazy="true"
+                        rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" >
+               
+               <p:ajax event="filter" process="@this" oncomplete="updateRowCount()"/>
+               <f:facet name="header">
+                                    <p:commandButton value="Show External Filters" onclick="inplace.show()"/>
+                                </f:facet>
+                 <p:column sortBy="#{row.name}" filterBy="#{row.name}">
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value="#{row.name}"/>
+                </p:column>
+                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" >
+                    <f:facet name="header">
+                        Lastname
+                    </f:facet>
+                    <h:outputText value="#{row.lastname}"/>
+                </p:column>
+      
+                <p:column sortBy="#{row.age}" filterBy="#{row.age}" style="width: 50px" >
+                    <f:facet name="header">
+                        Age
+                    </f:facet>
+                    <h:outputText value="#{row.age}"/>
+                    
+                </p:column>
+                <p:column headerText="Created" sortBy="#{row.createDate}" >
+                    <h:outputText value="#{row.createDate}">
+                        <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                    
+                </p:column>
+                 <p:column headerText="Updated" sortBy="#{row.updateDate}" >
+                    <h:outputText value="#{row.updateDate}">
+                        <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Version" sortBy="#{row.version}" >
+                    <h:outputText value="#{row.version}"/>
+                 </p:column>
+                <p:column style="width: 40px">
+                    <f:facet name="header">
+                        Edit
+                    </f:facet>
+                    <div align="center">
+                        <framework:editLink mbean="#{simpleMBean}" row="#{row}" update=":simpleCrudForm:pageControl"/>
+                    </div>
+                </p:column>
+                <p:column style="width: 40px">
+                    <f:facet name="header">
+                        Remove
+                    </f:facet>
+                    <div align="center">
+                        <framework:removeLink mbean="#{simpleMBean}" row="#{row}" modal="removePersonModal" />
+                    </div>
+                </p:column>
+                  <f:facet name="footer">
+                      <framework:tableFooter mbean="#{simpleMBean}" id="tableFooter" />
+                </f:facet>
+               
+           </p:dataTable>
+            
+               </p:panel>
+       </center>    
+     <framework:modalRemoval  mbean="#{simpleMBean}"
+                                    update=":simpleCrudForm:removePersonModal:msgRemove :simpleCrudForm:tablePanel"
+                                    header="Remove Person"
+                                    id="removePersonModal"
+                                    widgetVar="removePersonModal">
+                  <p:inputText value="#{simpleMBean.entityAux.name}" disabled="true"/>        
+    </framework:modalRemoval> 
+    
+     
+</ui:composition>

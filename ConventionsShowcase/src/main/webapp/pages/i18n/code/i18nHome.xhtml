@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        
+    &lt;h1 class="title ui-widget-header ui-corner-all"&gt;\#{msg.internationalization}&lt;/h1&gt;
+    &lt;div class="entry"&gt;
+        &lt;h:form id="i18nForm"&gt;
+
+            &lt;h:panelGrid columns="2"&gt;
+                &lt;h:outputText value="Language:"/&gt;
+                &lt;p:selectOneMenu value="\#{simpleI18nMBean.selectedLang}" style="width:100px;text-align: left" &gt;
+                    &lt;f:selectItem itemValue="\#{null}" itemLabel="" /&gt;
+                    &lt;f:selectItem itemValue="en" itemLabel="English" /&gt;
+                    &lt;f:selectItem itemValue="pt" itemLabel="Português" /&gt;
+                    &lt;p:ajax update="@form :leftMenu" listener="\#{simpleI18nMBean.changeLanguage}"/&gt;
+                &lt;/p:selectOneMenu&gt;
+                &lt;h:outputLabel rendered="\#{not empty simpleI18nMBean.selectedLang}" for="simpleMsg" value="\#{msg.simpleLabel}:"/&gt;
+                &lt;h:outputText rendered="\#{not empty simpleI18nMBean.selectedLang}" id="simpleMsg" value="\#{simpleI18nMBean.simpleHello}"/&gt;
+                &lt;h:outputLabel rendered="\#{not empty simpleI18nMBean.selectedLang}" for="paramMsg" value="\#{msg.paramLabel}:"/&gt;
+                &lt;h:outputText rendered="\#{not empty simpleI18nMBean.selectedLang}" id="paramMsg" value="\#{simpleI18nMBean.parametrizedHello}"/&gt;
+            &lt;/h:panelGrid&gt;
+            &lt;br/&gt;
+            &lt;p:outputPanel styleClass="homeText" rendered="\#{not empty simpleI18nMBean.selectedLang}"&gt;
+                - \#{msg.tip1} 
+                &lt;br/&gt; - \#{msg.tip2} 
+                &lt;br/&gt; - \#{msg.tip3} 
+                &lt;br/&gt; - \#{msg.tip4} 
+            &lt;/p:outputPanel&gt;
+        &lt;/h:form&gt;
+             
+        &lt;/div&gt;
+    &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+</ui:composition>

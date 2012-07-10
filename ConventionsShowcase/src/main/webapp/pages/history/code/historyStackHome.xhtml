@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml"&gt;
+
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;History Stack Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="historyForm"&gt;
+                &lt;p:menu styleClass="homeMenu"&gt;
+                    &lt;p:submenu label="Trackable Managed Beans"&gt;
+                        &lt;p:menuitem value="TrackableMBean1" action="\#{trackablePersonMBean.go}" immediate="true" ajax="false" /&gt;
+                        &lt;p:menuitem value="TrackableMBean2" action="\#{trackablePersonMBean2.go}" immediate="true" ajax="false"/&gt;
+                        &lt;p:menuitem value="Ajax HistoryStack" action="\#{ajaxStateMBean.go}" actionListener="\#{stateController.clearState}" immediate="true" ajax="false"/&gt;
+                    &lt;/p:submenu&gt;
+                &lt;/p:menu&gt;
+                     &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                &lt;framework:messageHide messageId=":historyForm:msg" timeout="1600" /&gt;
+                &lt;ui:insert/&gt;
+            &lt;/h:form&gt;  
+            &lt;br/&gt;
+            &lt;span class="homeText"&gt;
+                      - bread crumb based solution for keeping track of you beans
+            &lt;/span&gt;
+    
+        &lt;/div&gt;
+         &lt;script type="text/javascript"&gt;
+            jQuery(function() {
+                 historyNorthSize();
+              });
+        &lt;/script&gt;
+    &lt;/ui:define&gt;
+    
+   
+&lt;/ui:composition&gt;  
+</ui:composition>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+            &lt;h:form id="messageForm"&gt;
+                &lt;center&gt;
+                    &lt;p:messages id="hideMe"/&gt;
+                    &lt;p:commandButton value="info" actionListener="\#{messageHideMBean.addInfo}" update="messageForm:hideMe" oncomplete="hideMsg(args)"/&gt;
+                    &lt;p:commandButton value="warn" actionListener="\#{messageHideMBean.addWarn}" update="messageForm:hideMe" oncomplete="hideMsg(args)"/&gt;
+                    &lt;p:commandButton value="Error" actionListener="\#{messageHideMBean.addError}" update="messageForm:hideMe" oncomplete="hideMsg(args)"/&gt;
+                    &lt;framework:messageHide messageId=":messageForm:hideMe" timeout="1600" /&gt;
+                &lt;/center&gt;
+            &lt;/h:form&gt;
+</ui:composition>

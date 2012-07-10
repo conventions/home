@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <center>
+        <p:panel id="panelAdd" style="width: 300px;min-height:200px " header="#{simpleMBean.insertState ? 'Create Person': 'Edit Person' }">
+           <h:panelGrid columns="2">
+                <framework:label value="Name" requiredStyle="true" />
+                <framework:inputText value="#{simpleMBean.entity.name}" required="true" renderMessage="true"
+                                 requiredMessage="the name is required" /> 
+                <framework:label value="Lastname" requiredStyle="true" />
+                <framework:inputText value="#{simpleMBean.entity.lastname}" required="true" renderMessage="true"
+                                 requiredMessage="the lastname is required"  />
+                <framework:label value="Age" /> 
+                <p:spinner max="100" id="age"  size="17" min="0" stepFactor="1" value="#{simpleMBean.entity.age}"/>
+
+            </h:panelGrid>
+            <h:panelGrid columns="3" cellpadding="5px">
+                <framework:saveButton  mbean="#{simpleMBean}" process=":simpleCrudForm:panelAdd" 
+                                      update=":simpleCrudForm:panelAdd :simpleCrudForm:msg" oncomplete="hideMsg(args)"/>
+                <framework:resetButton mbean="#{simpleMBean}" update=":simpleCrudForm:panelAdd" />
+                <p:commandButton value="Back" action="#{simpleMBean.setFindState}" immediate="true" update=":simpleCrudForm:pageControl" icon="ui-icon back_img"/>
+            </h:panelGrid>
+        </p:panel>
+    </center>
+</ui:composition>

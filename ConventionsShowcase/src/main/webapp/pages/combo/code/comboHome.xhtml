@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+  &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Combo Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="comboForm"&gt;
+                     &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                &lt;framework:messageHide messageId="comboForm:msg" timeout="1600" /&gt;
+                &lt;h:panelGrid columns="3" style="text-align: right"&gt;
+                     &lt;h:outputLabel value="OneMenu:"/&gt;
+                     &lt;framework:combo  width="150" list="\#{comboMBean.personList}" value="\#{comboMBean.selectedPerson}" update=":comboForm:selected" converter="personConverter"/&gt;
+                     &lt;h:outputText id="selected" value="Selected OneMenu: \#{comboMBean.selectedPerson.name}"/&gt;
+                     &lt;h:outputLabel value="OneMenu2:"/&gt;      
+                     &lt;framework:combo list="\#{comboMBean.personList}" value="\#{comboMBean.selectedPerson}" update=":comboForm:selected2" listener="\#{comboMBean.listener()}"/&gt;
+                     &lt;h:outputText id="selected2" value="Selected OneMenu2: \#{comboMBean.selectedPerson.name}"/&gt;
+                     &lt;h:outputLabel value="OneRadio:"/&gt;
+                     &lt;framework:combo list="\#{comboMBean.personList}" type="oneRadio" value="\#{comboMBean.selectedPerson}"  update=":comboForm:selectedRadio" /&gt;
+                     &lt;h:outputText id="selectedRadio" value="Selected Radio: \#{comboMBean.selectedPerson.name}"/&gt;
+                     &lt;h:outputLabel value="OneList:"/&gt;
+                     &lt;framework:combo list="\#{comboMBean.personList}" type="oneList" value="\#{comboMBean.selectedPerson}"  update=":comboForm:selectedOneList" /&gt;
+                     &lt;h:outputText id="selectedOneList" value="Selected OneList: \#{comboMBean.selectedPerson.name}"/&gt;
+                     &lt;h:outputLabel value="ManyMenu:"/&gt;
+                     &lt;ui:remove&gt;&lt;!-- SELECT MANY NEED 'MBEAN' ATTRIBUTE BECAUSE OF MOJARRA ISSUE:http://java.net/jira/browse/JAVASERVERFACES-2047  --&gt; &lt;/ui:remove&gt;
+                     &lt;framework:combo list="\#{comboMBean.personList}" mbean="\#{comboMBean}"  type="manyMenu" value="selectedPersonList"   update=":comboForm:personTable" /&gt; 
+                     &lt;h:column/&gt;
+                     &lt;h:outputLabel value="ManyCheck:"/&gt;
+                     &lt;framework:combo list="\#{comboMBean.personList}" mbean="\#{comboMBean}" type="manyCheck" value="selectedPersonList"   update=":comboForm:personTable" /&gt;
+                          &lt;h:column/&gt;
+                &lt;/h:panelGrid&gt;
+                &lt;p:separator/&gt;
+                &lt;center&gt;
+                    &lt;p:dataTable id="personTable" value="\#{comboMBean.selectedPersonList}" var="p" emptyMessage="No person selected"&gt;
+                        &lt;f:facet name="header"&gt;
+                            Selected Person list
+                        &lt;/f:facet&gt;
+                        &lt;p:column headerText="Name"&gt;
+                            &lt;h:outputText value="\#{p.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column headerText="age"&gt;
+                            &lt;h:outputText value="\#{p.age}"/&gt;
+                        &lt;/p:column&gt;
+                    &lt;/p:dataTable&gt;
+                &lt;/center&gt;
+            &lt;/h:form&gt;  
+            &lt;br/&gt;
+            &lt;span class="homeText"&gt;
+                      - Combo component render all types of selects (one,many,listBox,radio).&lt;br/&gt;
+                      - show the list of values in a very simple to use combo component. &lt;br/&gt;
+                      - the component just expects a list of entities which extends AbstractBaseEntity or one of its subclasses&lt;br/&gt;
+                      - generic entity converter is used by default
+                      
+            &lt;/span&gt;
+             
+        &lt;/div&gt;
+</ui:composition>

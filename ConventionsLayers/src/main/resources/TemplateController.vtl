@@ -1,0 +1,115 @@
+package $package;
+
+import ${entityPackage}.${entity};
+import javax.inject.Inject;
+import com.jsf.conventions.bean.*;
+import com.jsf.conventions.qualifier.*;
+import java.io.Serializable;
+import javax.inject.Named;
+import ${scopePackage};
+#if($hasService ) 
+import ${servicePackage}.${serviceName};
+#end
+#if($isModalObserver) 
+import javax.enterprise.event.Observes;
+import com.jsf.conventions.event.ModalCallback;
+import com.jsf.conventions.bean.modal.ModalObserver;
+#end
+#if($beanType.equals("AbstractModalMBean")) 
+import com.jsf.conventions.bean.modal.ModalInitializable;
+import com.jsf.conventions.event.ModalInitialization;
+#end
+
+/**
+* bean description
+*/
+@Named("${beanQualifier}")
+@${beanScope}
+@PersistentClass(${entity}.class)
+#if($beanType.equals("AbstractHistoryStackMBean")) 
+@Historics({
+    @Historic(beanState="find",title="Search ${entity}", callback="#{${beanQualifier}.setFindState}",update=""),
+    @Historic(beanState="insert",title="Create ${entity}", callback="#{${beanQualifier}.setInsertState}",update=""),
+    @Historic(beanState="edit",title="Edit ${entity}",callback="#{${beanQualifier}.setUpdateState}",update="")
+})
+#end
+public class ${beanName} extends ${beanType}<${entity}> implements Serializable#if($isModalObserver) ,ModalObserver#end#if($beanType.equals("AbstractModalMBean")) ,ModalInitializable#end{
+ 
+#if($beanType.equals("AbstractModalMBean")) 
+    public static final String MODAL_NAME = "modalName";//change to an appropriate name 
+#end
+
+  #if($hasService ) 
+  @Inject
+    public void set${serviceName}(${serviceName} baseService) {
+        super.setBaseService(baseService);
+    }
+    
+    public ${serviceName} get${serviceName}(){
+        return (${serviceName})super.getBaseService();
+    }
+  #end 
+
+    /**
+     *logic to perform on saveButton click
+    */  
+    @Override
+    public void store() {
+        
+        super.store();
+    }
+     
+   
+    /**
+     *logic to perform after addButton is clicked 
+    */  
+    @Override
+    public String afterPrepareInsert() {
+       
+        return null; //page to return
+    }
+
+    /**
+     * logic to perform after editButton is clicked
+    */ 
+    @Override
+    public String afterPrepareUpdate() {
+        return null;//page to return
+    }  
+    
+     /**
+     * called when 'filterButton' is clicked
+     */
+    @Override
+    public void find() {
+     /** put parameter in the filter map */  
+    }
+
+    #if($beanType.equals("AbstractModalMBean")) 
+@Override
+    public Object modalCallback() {
+       /** modal return */ 
+       return new Object();
+    }
+
+    public String getModalName() {
+        return MODAL_NAME;
+    }
+    
+    @Override
+    public void beforeOpen(@Observes ModalInitialization modalInit) {
+        if(getModalName().equals(modalInit.getModal())){
+            //perform modalInitialization
+        }
+    }
+     #end 
+   
+
+#if($isModalObserver) 
+   @Override
+   public void modalResponse(@Observes ModalCallback callback) {
+            
+   }
+
+#end
+}

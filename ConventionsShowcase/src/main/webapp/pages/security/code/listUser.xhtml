@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+  xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="securityHome.xhtml"&gt;
+
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;List of Person&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+                    &lt;center&gt;
+                        &lt;p:panel id="listPanel" style="overflow: auto;"&gt;
+                            &lt;p:dataTable value="\#{securityMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex" 
+                                         rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,20,30"&gt;
+                                &lt;p:ajax event="page"  onstart="jQuery('div[id$=table]').block({ message: 'paging...'  })" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
+                                &lt;p:ajax event="sort"  onstart="jQuery('div[id$=table]').block({ message: 'sorting...'  })" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
+                                &lt;p:ajax event="filter" update=":securityForm:listPanel" onstart="jQuery('div[id$=table]').block({ message: 'filtering...'  })" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
+                               
+                                &lt;p:column  sortBy="\#{row.name}" filterBy="\#{row.name}"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Name
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.name}"/&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Lastname
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.lastname}"/&gt;
+                                &lt;/p:column&gt;
+
+                                &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"  filterStyle="width:50px"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Age
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.age}"/&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column headerText="Created" sortBy="\#{row.createDate}" &gt;
+                                    &lt;h:outputText value="\#{row.createDate}"&gt;
+                                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                                    &lt;/h:outputText&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column headerText="Updated" sortBy="\#{row.updateDate}" &gt;
+                                    &lt;h:outputText value="\#{row.updateDate}"&gt;
+                                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                                    &lt;/h:outputText&gt;
+                                &lt;/p:column&gt;
+                                 &lt;p:column headerText="Version" sortBy="\#{row.version}" &gt;
+                                    &lt;h:outputText value="\#{row.version}"/&gt;
+                                 &lt;/p:column&gt;
+                                &lt;p:column style="width: 85px"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Edit(role:admin)
+                                    &lt;/f:facet&gt;
+                                    &lt;div align="center"&gt;
+                                        &lt;framework:editLink   mbean="\#{securityMBean}" row="\#{row}" update=":securityForm:msg" /&gt;
+                                    &lt;/div&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column style="width: 105px"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Remove(role:admin)
+                                    &lt;/f:facet&gt;
+                                    &lt;div align="center"&gt;
+                                        &lt;framework:removeLink  mbean="\#{securityMBean}" row="\#{row}" modal="securityRemoval" /&gt;
+                                    &lt;/div&gt;
+                                &lt;/p:column&gt;
+                                &lt;f:facet name="footer"&gt;
+                                     &lt;framework:tableFooter mbean="\#{securityMBean}" /&gt;
+                                &lt;/f:facet&gt;
+                            &lt;/p:dataTable&gt;
+                        &lt;/p:panel&gt;
+                    &lt;/center&gt;
+        &lt;/div&gt;
+        
+        &lt;framework:modalRemoval widgetVar="securityRemoval" mbean="\#{securityMBean}" update=":securityForm:listPanel" header="Remove Person"&gt;
+            &lt;framework:inputText label="Person" value="\#{securityMBean.entityAux.name}" disabled="true"/&gt;
+        &lt;/framework:modalRemoval&gt;
+</ui:composition>

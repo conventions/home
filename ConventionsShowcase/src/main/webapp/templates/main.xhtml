@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+        xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+	template="/templates/layout.xhtml">
+        
+        <ui:param name="title" value="Conventions Framework - Showcase"/>
+        <ui:param name="logo" value="Conventions Framework Showcase"/>
+        <ui:param name="leftHeader" value="Examples"/>
+        <ui:param name="keepLayoutState" value="#{true}"/>
+        <ui:param name="locale" value="#{true}"/>
+        
+        <ui:define name="head">
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/syntaxhighlighter/styles/syntaxhighlighter.css" />
+            <h:outputStylesheet library="css" name="showcase.css"/>
+                                                                              <!-- showcase only supports en and pt languages -->
+            <f:loadBundle basename="com.conventions.showcase.bundle.messages_#{(resourceBundleProvider.language ne 'en' and resourceBundleProvider.language ne 'pt') ? 'en': resourceBundleProvider.language }" var="msg"/>
+        </ui:define>
+        
+        <ui:define name="topRightMenu">
+            <h:panelGrid columns="2" id="themes">
+                <h:outputText value="Theme:"/>
+                <p:themeSwitcher value="#{themeMBean.theme}" style="width:158px;text-align: left" effect="fade" var="t" converter="themeConverter">
+                    <f:selectItem itemLabel="Choose Theme" itemValue="#{null}" />
+                    <f:selectItems value="#{themeMBean.themeList}" var="theme" itemLabel="#{theme.name}" itemValue="#{theme}"/>
+                    <p:ajax update=":evenRowPanel"/>
+                      
+                    <p:column>
+                        <h:graphicImage library="images/themes" name="#{t.image}" width="40" height="30"/>
+                    </p:column>
+
+                    <p:column>
+                        #{t.name}
+                    </p:column>
+                </p:themeSwitcher>  
+            </h:panelGrid>
+        </ui:define>
+	 
+        <ui:define name="headerForm">
+            <p:growl id="growl" life="1200"/>
+            <p:remoteCommand name="onload"  rendered="#{not databaseHelper.aplicattionInitialized}" 
+                             global="false" action="#{databaseHelper.initDatabase()}" 
+                             onstart="jQuery.blockUI();"
+                             oncomplete="jQuery.unblockUI();"
+                             />
+            <!-- just to avoid javascript error: 'initDatabase is not defined' when aplicattionInitialized = true -->
+            <p:remoteCommand name="onload" rendered="#{databaseHelper.aplicattionInitialized}" 
+                             /> 
+            <p:remoteCommand name="resetNorthSize" oncomplete=" mainLayout.sizePane('north',125);"/>
+            <p:remoteCommand name="historyNorthSize" oncomplete=" mainLayout.sizePane('north',155);"/>
+        </ui:define>
+        <ui:define name="topLeftMenu">
+            <ul id="main">
+                <li class="current_page_item" >
+                   <p:commandLink value="Home" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  style="margin-left: -300px;"/>
+                </li>
+            </ul>
+        </ui:define>
+        
+        <ui:define name="centerBottom">
+            <div style="clear: both;">&nbsp;</div>
+                <ui:insert name="source"/>
+        </ui:define>
+        
+        <ui:define name="left">
+            <h:form id="leftMenu">
+                <p:menu>  
+                    <p:submenu label="Use Cases">  
+                        <p:menuitem action="/pages/exception/exceptionHome.faces?faces-redirect=true" ajax="false" value="Exception Handling" immediate="true"  actionListener="#{stateController.clearState}" /> 
+                        <p:menuitem action="/pages/history/historyStackHome?faces-redirect=true" ajax="false" value="HistoryStack" immediate="true"  actionListener="#{stateController.clearState}" /> 
+                        <p:menuitem action="/pages/i18n/i18nHome.faces?faces-redirect=true" ajax="false" value="#{msg['internationalization']}" actionListener="#{stateController.clearState}" immediate="true" /> 
+                        <p:menuitem action="/pages/modal/modalSelection.faces?faces-redirect=true" ajax="false" actionListener="#{stateController.clearState}" id="modalLink" value="Modal(list of values)" immediate="true"/>
+                        <p:menuitem action="/pages/paginator/paginatorHome.faces?faces-redirect=true" ajax="false" value="Paginator"  actionListener="#{stateController.clearState}" immediate="true"/> 
+                        <p:menuitem action="/pages/person/personHome.faces?faces-redirect=true" ajax="false" value="Person Crud"  actionListener="#{stateController.clearState}" immediate="true"/> 
+                        <p:menuitem action="/pages/properties/propertiesHome.faces?faces-redirect=true" ajax="false" value="Properties"  actionListener="#{stateController.clearState}" immediate="true"/> 
+                        <p:menuitem action="#{securityMBean.goSecurity}" value="Security" ajax="false" actionListener="#{stateController.clearState}" immediate="true"  global="false" /> 
+                    </p:submenu>
+                    <p:submenu label="Components">  
+                        <p:menuitem action="/pages/combo/comboHome.faces?faces-redirect=true" ajax="false" value="Combo" actionListener="#{stateController.clearState}" immediate="true" /> 
+                        <p:menuitem action="/pages/input/input.faces?faces-redirect=true" ajax="false" value="InputText" actionListener="#{stateController.clearState}" immediate="true"/> 
+                        <p:menuitem action="/pages/messageHide/messageHide.faces?faces-redirect=true" ajax="false" value="Message Hide" actionListener="#{stateController.clearState}" immediate="true" /> 
+                        <ui:remove><p:menuitem action="/pages/panelgrid/panelGridHome.faces?faces-redirect=true" ajax="false" value="PanelGrid" actionListener="#{stateController.clearState}" immediate="true" /> </ui:remove>
+                        <p:menuitem action="/pages/security/secret.faces?faces-redirect=true" ajax="false" value="SecurityArea" actionListener="#{stateController.clearState}" immediate="true"/> 
+                        <p:menuitem action="/pages/validation/validationPanel.faces?faces-redirect=true" ajax="false" value="ValidationPanel" immediate="true"/> 
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+            
+        </ui:define>
+        
+        <ui:define name="footer">
+            <p:outputPanel id="evenRowPanel">
+             <style type="text/css">
+                   .even-row{
+                          background-color: #{themeMBean.evenRow} !important;
+                          background-image: none;
+                            }
+               </style>
+               </p:outputPanel>
+             <p class="copyright" style="font-size: 9px" >&copy;&nbsp;&nbsp;2011-2012 &nbsp;&nbsp; <a href="http://code.google.com/p/jsf-conventions-framework/" target="_blank">Conventions #{applicationInfoMBean.infoMap['conventions.version']}</a></p>
+             <p style="float:right;font-size: 9px"  >Powered by  <a style="font-size: 9px" href="http://javaserverfaces.java.net/" target="_blank">Mojarra #{applicationInfoMBean.infoMap['mojarra.version']}</a>, <a style="font-size: 9px" href="http://www.primefaces.org/" target="_blank">Primefaces #{applicationInfoMBean.infoMap['primefaces.version']}</a>, <a style="font-size: 9px" href="http://code.google.com/p/primefaces-extensions/" target="_blank">Primefaces Ext #{applicationInfoMBean.infoMap['primefaces-ext.version']}</a>, <a style="font-size: 9px" href="http://hibernate.org" target="_blank">Hibernate #{applicationInfoMBean.infoMap['hibernate.version']}</a>, <a href="http://jcp.org/aboutJava/communityprocess/final/jsr318/" style="font-size: 9px" target="_blank">EJB3.1</a>, <a style="font-size: 9px" href="http://myfaces.apache.org/extensions/cdi/" target="_blank">CODI #{applicationInfoMBean.infoMap['myfaces.codi.version']}</a> on <a style="font-size: 9px" href="http://glassfish.java.net/public/downloadsindex.html#top" target="_blank">Glassfish 3.x</a> and <a href="http://www.jboss.org/as7" style="font-size: 9px" target="_blank">JBossAS 7.x</a> - <h:outputText style="font-size: 9px" value="deploy time: "/> <h:outputText style="font-size: 9px" value="#{applicationInfoMBean.buildTime}"><f:convertDateTime locale="pt_BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy HH:mm:ss zzzz"/> </h:outputText> - [<h:outputText style="font-size: 9px" value="#{accessCountMBean.accessCount}"/>] </p>
+             
+        </ui:define>
+        
+        <ui:define name="outer">     
+              
+            <ui:insert name="highlight">
+            <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shCore.js"></script>
+            <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shBrushXml.js"></script>
+            <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shBrushJava.js"></script>
+            <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shBrushCss.js"></script>
+            <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+            <script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '#{request.contextPath}/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('code');
+            </script>
+           </ui:insert>
+          
+        </ui:define>
+</ui:composition>

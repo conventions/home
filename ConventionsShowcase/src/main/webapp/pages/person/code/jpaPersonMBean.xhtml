@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+package com.jsf.conventions.showcase.controller;
+
+import com.jsf.conventions.bean.BaseMBean;
+import com.jsf.conventions.qualifier.JPAService;
+import java.io.Serializable;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.showcase.service.PersonService;
+import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+/**
+ *
+ * @author Rafael M. Pestano Mar 19, 2011 2:16:11 PM
+ */
+@ConversationScoped
+@Named(value="jpaPersonMBean")
+public class JPAPersonMBean extends BaseMBean&lt;Person&gt; implements Serializable {
+
+  /**
+     * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
+     * you dont need the JPAService qualifier if you have only one type of service
+     * @param personService
+     */
+    @Inject
+    public void setPersonService(@JPAService PersonService personService) {
+        super.setBaseService(personService);
+    }
+
+    public PersonService getPersonService(){
+        return (PersonService)super.getBaseService();
+    }
+
+    @Override
+    public Person create() {
+        return null;
+    }
+    
+}
+</ui:composition> 

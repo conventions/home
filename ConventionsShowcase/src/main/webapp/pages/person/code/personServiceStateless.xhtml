@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+package com.jsf.conventions.showcase.service;
+
+import com.jsf.conventions.service.BaseService;
+import com.jsf.conventions.showcase.model.Person;
+import java.util.List;
+
+/**
+ *
+ * @author Rafael M. Pestano Mar 21, 2011 4:33:35 PM
+ */
+public interface StatelessPersonService extends BaseService&lt;Person, Long&gt;{
+
+    boolean alowDeletePerson(Person entity);
+
+    public List&lt;Person&gt; findFriends(Long id);
+}
+
+    </ui:composition>

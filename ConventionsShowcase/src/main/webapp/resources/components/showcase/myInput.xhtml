@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+
+    <cc:interface componentType="myInputCC">
+        <cc:attribute name="valor" required="false"/>
+        <cc:attribute name="identificador" required="true"/>
+        <cc:attribute name="tamanho" required="false"/>
+        <cc:attribute name="obrigatorio" required="false"/>
+        <cc:attribute name="MensagemObrigatorio" required="false"/>
+        <cc:attribute name="tamanhoCaracteres" required="false" default="255"/>
+</cc:interface>
+
+    <!-- IMPLEMENTATION -->
+<cc:implementation>
+        <h:inputText required="#{cc.attrs.obrigatorio}" requiredMessage="#{cc.attrs.MensagemObrigatorio}" value="#{cc.attrs.valor}" id="#{cc.attrs.identificador}" size="#{cc.attrs.tamanho}" maxlength="#{cc.attrs.tamanhoCaracteres}"/>
+</cc:implementation>
+
+</html>
+
+

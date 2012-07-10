@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 xmlns:conventions="http://conventions.com/ui"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h1 class="title ui-widget-header ui-corner-all">Input</h1>
+        <div class="entry">
+            <h:form id="inputForm">
+                <p:messages id="msg"/>
+                <h:panelGrid id="grid" columns="2">
+                    <framework:label value="Required input" requiredStyle="true"/>
+                    <framework:inputText  
+                                     required="true"  
+                                     maxlength="10"
+                                     value="#{inputMBean.requiredInput}" 
+                                     requiredMessage="field is required"  />
+                    <framework:label value="Update on Blur"/> 
+                    <framework:inputText  
+                                     value="#{inputMBean.requiredInput}"
+                                     updateOnBlur="true" 
+                                     update="@this :inputForm:msg"/>
+                    <framework:label value="Input secret" requiredStyle="true" /> 
+                    <framework:inputSecret required="true" requiredMessage="Password is required"
+                        value="#{inputMBean.password}" />
+                    
+                    
+                    <framework:label  value="Render message"/> 
+                    <framework:inputText 
+                                     value="#{inputMBean.requiredInput}" 
+                                     renderMessage="true" 
+                                     requiredMessage="field is required" />
+                    
+                   <framework:label value="Only numbers" requiredStyle="true" /> 
+                   <framework:inputText numeric="true" 
+                                     value="#{inputMBean.number}" 
+                                      />
+                   
+                    <framework:label value="Right required style" requiredStyle="true" leftRequiredStyle="false" /> 
+                    <framework:inputSecret required="true" requiredMessage="required field"
+                        value="#{inputMBean.requiredInput}" />
+                </h:panelGrid>
+                <center><p:commandButton id="bt" value="Go" process="@form" update="@form" style="width: 75px"/></center>
+                
+            </h:form>
+            <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+            <br/>
+            <span class="homeText">- highlight on error <br/> - render required asterisk on required fields  <br/> - update on blur - only numbers </span>
+            
+              <h3>Source</h3>
+
+            <p:tabView >
+                <p:tab title="input.xhtml">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/input.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="InputMBean.java">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/inputMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+            </p:tabView>
+        </div>
+    </ui:define>
+</ui:composition>

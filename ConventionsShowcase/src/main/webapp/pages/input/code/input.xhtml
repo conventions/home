@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    &lt;h:form id="inputForm"&gt;
+                &lt;p:messages id="msg"/&gt;
+                &lt;h:panelGrid id="grid" columns="2"&gt;
+                    &lt;framework:label value="Required input" requiredStyle="true"/&gt;
+                    &lt;framework:inputText  
+                                     required="true"  
+                                     maxlength="10"
+                                     value="\#{inputMBean.requiredInput}" 
+                                     requiredMessage="field is required"  /&gt;
+                    &lt;framework:label value="Update on Blur"/&gt; 
+                    &lt;framework:inputText  
+                                     value="\#{inputMBean.requiredInput}"
+                                     updateOnBlur="true" 
+                                     update="@this :inputForm:msg"/&gt;
+                    &lt;framework:label value="Input secret" requiredStyle="true" /&gt; 
+                    &lt;framework:inputSecret required="true" requiredMessage="Password is required"
+                        value="\#{inputMBean.password}" /&gt;
+                    
+                    
+                    &lt;framework:label  value="Render message"/&gt; 
+                    &lt;framework:inputText 
+                                     value="\#{inputMBean.requiredInput}" 
+                                     renderMessage="true" 
+                                     requiredMessage="field is required" /&gt;
+                    
+                   &lt;framework:label value="Only numbers" requiredStyle="true" /&gt; 
+                   &lt;framework:inputText numeric="true" 
+                                     value="\#{inputMBean.number}" 
+                                      /&gt;
+                   
+                    &lt;framework:label value="Right required style" requiredStyle="true" leftRequiredStyle="false" /&gt; 
+                    &lt;framework:inputSecret required="true" requiredMessage="required field"
+                        value="\#{inputMBean.requiredInput}" /&gt;
+                &lt;/h:panelGrid&gt;
+                &lt;p:commandButton id="bt" value="Go" process="grid" update="msg grid"/&gt;
+            &lt;/h:form&gt;
+</ui:composition>

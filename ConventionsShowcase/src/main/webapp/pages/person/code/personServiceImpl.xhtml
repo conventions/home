@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+import com.jsf.conventions.model.ConventionsDataModel;
+import com.jsf.conventions.qualifier.HibernateService;
+import com.jsf.conventions.service.impl.HibernateServiceImpl;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.showcase.service.PersonService;
+import java.util.Map;
+import javax.inject.Named;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.primefaces.model.SortOrder;
+
+/**
+ *
+ * @author Rafael M. Pestano Mar 21, 2011 4:35:41 PM
+ */
+@Named("personService")
+public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&gt; implements
+        PersonService {
+
+   
+
+    /**
+     * Override this for complex filtering(associations)
+     * or to change the default behavior(@see hibernateDao#addBasicFilterRestrictions)  
+     * otherwise you dont need to override this method, see simpleMBean 
+     * which has no service and also has filtering 
+     */    
+    @Override
+    public ConventionsDataModel&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+        DetachedCriteria dc = getDao().getDetachedCriteria();
+        if(sortField == null || "".equals(sortField)){//default sort by name 
+            sortField = "name";
+        }
+        if (externalFilter != null &amp;&amp; !externalFilter.isEmpty()) {
+            String name = (String) externalFilter.get("name");
+            if (name != null) {
+                dc.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
+            }
+            String lastname = (String) externalFilter.get("lastname");
+            if (lastname != null) {
+                dc.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
+            }
+            String age = (String) externalFilter.get("age");
+            if (age != null &amp;&amp; !age.trim().equals("")) {
+                dc.add(Restrictions.eq("age", new Integer(age)));
+            }
+        }
+        /* config prime datatable filter columns */
+        if (filters != null &amp;&amp; !filters.isEmpty()) {
+            if (filters.get("name") != null) {
+                dc.add(Restrictions.ilike("name", (String) filters.get("name"), MatchMode.ANYWHERE));
+            }
+            if (filters.get("lastname") != null) {
+                dc.add(Restrictions.ilike("lastname", (String) filters.get("lastname"), MatchMode.ANYWHERE));
+            }
+
+            if (filters.get("age") != null) {
+                dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
+            }
+        }
+        return hibernateDao.findPaginated(first, pageSize, sortField, sortOrder, dc);
+    }
+    
+    @Override
+    public boolean alowDeletePerson(Person entity) {
+        if (entity.getAge() > 60) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void beforeRemove(Person entity) {
+        //override to perform logic before removing an entity
+        super.beforeRemove(entity);
+    }
+    
+    @Override
+    public void remove(Person entity) {
+        //called by remove button, override to perform logic when removing an entity
+        if(this.alowDeletePerson(entity)){
+            super.remove(entity);
+        }
+        else{
+            throw new BusinessException("Not allowed to remove person above 60 year old.");
+        }
+    }
+    
+
+    @Override
+    public void afterRemove(Person entity) {
+       //override to perform logic after removing an entity
+        super.afterRemove(entity);
+    }
+
+    @Override
+    public void beforeStore(Person entity) {
+        //override to perform logic before storing an entity
+        super.beforeStore(entity);
+    }
+    
+    @Override
+    public void store(Person entity) {
+        //called save button click, override to perform logic when storing an entity
+        super.store(entity);
+    }
+    
+    @Override
+    public void afterStore(Person entity) {
+       //override to perform logic after storing an entity
+        super.afterStore(entity);
+    }
+}
+
+    </ui:composition>

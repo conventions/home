@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+   &lt;h1 class="title ui-widget-header ui-corner-all"&gt;\#{ajaxStateMBean.insertState ? 'Create':'Edit'}  Person&lt;/h1&gt;
+                &lt;center&gt;
+                    &lt;p:panel id="panelAdd" style="width: 300px;min-height:200px" header="\#{ajaxStateMBean.insertState ? 'Create Person': 'Edit Person' }"&gt;
+                        &lt;framework:backButton update=":historyForm:pageControl"/&gt;
+                         &lt;h:panelGrid columns="2"&gt;
+                            &lt;framework:label value="Name" requiredStyle="true" /&gt;
+                            &lt;framework:inputText value="\#{ajaxStateMBean.entity.name}" required="true" renderMessage="true"
+                                            requiredMessage="the name is required" /&gt; 
+                            &lt;framework:label value="Lastname" requiredStyle="true" /&gt;
+                            &lt;framework:inputText value="\#{ajaxStateMBean.entity.lastname}" required="true" renderMessage="true"
+                                            requiredMessage="the lastname is required"  /&gt;
+                            &lt;framework:label value="Age" requiredStyle="true" /&gt; 
+                            &lt;p:spinner max="100" id="age"  size="17" min="0" stepFactor="1" value="\#{ajaxStateMBean.entity.age}"/&gt;
+                         &lt;/h:panelGrid&gt;
+                        &lt;h:panelGrid columns="3" cellpadding="5px"&gt;
+                            &lt;framework:saveButton  mbean="\#{ajaxStateMBean}" process=":historyForm:panelAdd"
+                                                   update=":historyForm:msg :historyForm:pageControl"  oncomplete="hideMsg(args)"/&gt;
+                            &lt;framework:resetButton mbean="\#{ajaxStateMBean}" update=":historyForm:panelAdd :historyForm:pageControl"  /&gt;
+                            &lt;framework:messageHide messageId=":historyForm:msg"/&gt;
+                        &lt;/h:panelGrid&gt;
+                        &lt;center&gt;
+                            &lt;p:commandButton value="Manage Friends" action="\#{ajaxStateMBean.goFriend}" update=":historyForm:pageControl" process="historyForm:panelAdd" /&gt;
+                        &lt;/center&gt;
+                    &lt;/p:panel&gt;
+                &lt;/center&gt;
+</ui:composition>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+      //you need to create a navigation rule to handle the 'outcome' attribute of securityPage component
+       &lt;navigation-rule&gt; 
+         &lt;from-view-id&gt;*&lt;/from-view-id&gt; 
+         &lt;navigation-case&gt; 
+             &lt;from-outcome&gt;securityList&lt;/from-outcome&gt; 
+             &lt;to-view-id&gt;/pages/security/listUser.faces&lt;/to-view-id&gt; 
+             &lt;redirect/&gt; 
+         &lt;navigation-case&gt; 
+       &lt;/navigation-rule>
+</ui:composition>

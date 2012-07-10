@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ /**
+ * 
+ */
+package com.jsf.conventions.dao.impl;
+
+import com.jsf.conventions.dao.HibernateDao;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import com.jsf.conventions.model.AbstractBaseEntity;
+import com.jsf.conventions.model.ConventionsDataModel;
+import com.jsf.conventions.qualifier.StatefulHibernateDao;
+import java.util.Map.Entry;
+import java.util.Set;
+import javax.ejb.LocalBean;
+import javax.inject.Inject;
+
+import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.loader.custom.ScalarReturn;
+import org.hibernate.transform.ResultTransformer;
+import org.primefaces.model.SortOrder;
+
+/**
+ * 
+ * @author Rafael M. Pestano Apr 23, 2011 2:34:49 AM
+ */
+
+@Named
+@Stateful
+@StatefulHibernateDao
+public class StatefulGenericHibernateDao&lt;T extends AbstractBaseEntity, Id extends Serializable&gt; implements HibernateDao&lt;T, Id&gt;, Serializable {
+
+    private Class&lt;T&gt; persistentClass;
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    private EntityManager em;
+    private Session session;
+
+
+    @Override
+    public Session getSession() {
+        if (session == null || !session.isOpen()) {
+            if (em.getDelegate() instanceof org.hibernate.ejb.HibernateEntityManager) {
+                session = ((org.hibernate.ejb.HibernateEntityManager) em.getDelegate()).getSession();
+            } else {
+                session = (org.hibernate.Session) em.getDelegate();
+            }
+        }
+        return session;
+    }
+    
+    
+    /**
+     * set by the serviceLayer
+     * @param persistentClass 
+     */
+    @Override
+    public void setPersistentClass(Class&lt;T&gt; persistentClass) {
+        this.persistentClass = persistentClass;
+    }
+    
+    @Override
+    public Class&lt;T&gt; getPersistentClass(){
+        return this.persistentClass;
+    }
+
+    @Override
+    public T load(Id id) {
+        return (T) this.getSession().load(this.persistentClass, id);
+    }
+
+    @Override
+    public T get(Id id) {
+        return (T) this.getSession().get(this.persistentClass, id);
+    }
+
+    @Override
+    @TransactionAttribute
+    public void save(T entity) {
+        this.getSession().save(entity);
+    }
+
+    @Override
+    @TransactionAttribute
+    public void update(T entity) {
+        this.getSession().update(entity);
+    }
+
+    @Override
+    @TransactionAttribute
+    public void delete(T entity) {
+        this.getSession().delete(entity);
+    }
+
+    @Override
+    @TransactionAttribute
+    public T refresh(T entity) {
+        this.getSession().refresh(entity);
+        return entity;
+    }
+
+    @Override
+    @TransactionAttribute
+    public void saveOrUpdate(T entity) {
+        this.getSession().saveOrUpdate(entity);
+    }
+
+    @Override
+    public List&lt;T&gt; findAll() {
+        Criteria criteria = getSession().createCriteria(persistentClass);
+        return criteria.list();
+    }
+
+    @Override
+    public List&lt;T&gt; findAll(Integer first, Integer max) {
+         Criteria criteria = getSession().createCriteria(persistentClass);
+         criteria.setFirstResult(first);
+         criteria.setMaxResults(max);
+         return criteria.list();
+    }
+
+    @Override
+    public List&lt;T&gt; findByExample(final T entity) {
+        Criteria criteria = getSession().createCriteria(persistentClass);
+        criteria.add(Example.create(entity).enableLike(MatchMode.ANYWHERE).ignoreCase());
+        return criteria.list();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public T findOneByExample(final T entity) {
+        Criteria criteria = getSession().createCriteria(persistentClass);
+        criteria.add(Example.create(entity).enableLike(MatchMode.ANYWHERE).ignoreCase());
+        return (T) criteria.uniqueResult();
+
+    }
+    
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public T findOneByExample(final T entity,MatchMode matchMode) {
+        Criteria criteria = getSession().createCriteria(persistentClass);
+        criteria.add(Example.create(entity).enableLike(matchMode).ignoreCase());
+        return (T) criteria.uniqueResult();
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List&lt;T&gt; findByExample(T exampleInstance, String[] excludeProperty) {
+        Criteria crit = getSession().createCriteria(persistentClass);
+        Example example =  Example.create(exampleInstance);
+        for (String exclude : excludeProperty) {
+            example.excludeProperty(exclude);
+        }
+        crit.add(example);
+        return crit.list();
+    }
+
+    /**
+     * Hibernate implementation of pagination
+     * @param first
+     * @param pageSize
+     * @param sortField
+     * @param sortOrder
+     * @param dc
+     * @return 
+     */
+    @Override
+    public ConventionsDataModel&lt;T&gt; findPaginated(final int first, final int pageSize, String sortField, SortOrder sortOrder, final DetachedCriteria dc) {
+
+        int size = getRowCount(dc).intValue();
+        if (sortField != null &amp;&amp; !sortOrder.equals(SortOrder.UNSORTED)) {
+            if (sortOrder.equals(SortOrder.ASCENDING)) {
+                dc.addOrder(Order.asc(sortField));
+            } else {
+                dc.addOrder(Order.desc(sortField));
+            }
+        }
+        
+        List&lt;T&gt; data = this.findByCriteria(dc, first, pageSize);
+        
+        
+        return new ConventionsDataModel&lt;T&gt;(data, size);
+    }
+
+    /**
+     * basic implementation of pagination without restrictions
+     * @param first
+     * @param pageSize
+     * @param sortField
+     * @param sortOrder 
+     * @param filters sortBy in primefaces datatable
+     * @param externalFilter filters outside datatable- eg: inputText, sliders, autocomplete etc.. 
+     * @return 
+     */
+    @Override
+    public ConventionsDataModel&lt;T&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map&lt;String, String&gt; filters, Map&lt;String, Object&gt; externalFilter) {
+        DetachedCriteria dc = DetachedCriteria.forClass(persistentClass);
+        return this.findPaginated(first, pageSize, sortField, sortOrder, dc);
+    }
+
+    @Override
+    public Long getRowCount(final DetachedCriteria dc) {
+        Criteria criteria = dc.getExecutableCriteria(getSession());
+        criteria.setProjection(Projections.rowCount());
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(1);
+        Long result = (Long) criteria.uniqueResult();
+        dc.setProjection(null);
+        dc.setResultTransformer(Criteria.ROOT_ENTITY);        
+        return result;
+    }
+
+    @Override
+    public int countAll() {
+        Criteria criteria = getSession().createCriteria(persistentClass);
+        criteria.setProjection(Projections.rowCount());
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(1);
+        return ((Long) criteria.uniqueResult()).intValue();
+    }
+
+    @Override
+    public List&lt;T&gt; findByCriteria(DetachedCriteria dc, int first, int maxResult) {
+        Criteria criteria = dc.getExecutableCriteria(getSession());
+        criteria.setFirstResult(first);
+        criteria.setMaxResults(maxResult);
+        return criteria.list();
+    }
+
+    @Override
+    public List&lt;T&gt; findByCriteria(DetachedCriteria dc) {
+        return dc.getExecutableCriteria(getSession()).list();
+    }
+
+    @Override
+    public DetachedCriteria getDetachedCriteria() {
+        return DetachedCriteria.forClass(persistentClass);
+    }
+
+     /**
+     * 
+     * @param nativeQuery
+     * @param params
+     * @param class entity
+     * @param result transformer
+     * @param Scalar
+     * @return 
+     */
+    @Override
+    public List findByNativeQuery(String nativeQuery,Map params,Class entity,ResultTransformer rt,ScalarReturn scalar){
+        SQLQuery query = getSession().createSQLQuery(nativeQuery);
+        if(scalar != null){
+            query.addScalar(scalar.getColumnAlias(), scalar.getType());
+        }
+        if(rt != null){
+             query.setResultTransformer(rt);
+        }
+        if(entity != null){
+            query.addEntity(entity);
+        }
+        
+        Set&lt;Entry&gt; rawParameters = params.entrySet();
+        for (Entry entry : rawParameters) {
+            query.setParameter(entry.getKey().toString(), entry.getValue());
+        }
+        return query.list();
+    }
+
+}
+
+</ui:composition>

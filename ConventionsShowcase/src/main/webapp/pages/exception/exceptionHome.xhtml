@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h1 class="title ui-widget-header ui-corner-all">Exceptions</h1>
+        <div class="entry">
+            <h:form id="exceptionForm">
+                <p:messages id="msg" />
+                <h:panelGrid columns="2">
+                <p:commandButton value="Business Logic Exception" 
+                                 action="#{exceptionMBean.doBusinessLogicException}" 
+                                 update="msg"/>
+                
+                <p:commandButton value="Unchecked Exception" 
+                                 action="#{exceptionMBean.doUncheckedException}" 
+                                 update="msg"
+                                 />
+                </h:panelGrid>
+            </h:form>
+            <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+            <br/>
+            <span class="homeText">- Business logic exceptions thrown on any action method are catch by the framework and transformed into to an error FacesMessages.
+                <br/> - Unexpected exceptions redirects user to an error page(you must create a navigation rule to match 'errorPage')</span>
+            
+              <h3>Source</h3>
+            <p:tabView >
+                <p:tab title="exceptionHome.xhtml">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/exceptionHome.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="ExceptionMBean.java">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/exceptionMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="faces-config.xml">
+                    <pre name="code" class="xml">
+                      <ui:include src="code/faces-config.xhtml"/>
+                   </pre>
+                </p:tab>
+            </p:tabView>
+        </div>
+    </ui:define>
+</ui:composition>

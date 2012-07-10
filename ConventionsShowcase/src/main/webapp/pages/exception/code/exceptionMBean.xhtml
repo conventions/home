@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.jsf.conventions.showcase.controller;
+
+import com.jsf.conventions.exception.BusinessException;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+/**
+ *
+ * @author Rafael M. Pestano Apr 4, 2011 7:58:11 PM
+ */
+@ManagedBean(name="exceptionMBean")
+@ViewScoped
+public class ExceptionMBean {
+    
+   
+   public void doBusinessLogicException(){
+       if(1 &lt; 2 &amp;&amp; (1+1 == 2)){
+           throw new BusinessException("Business Logic exception...");
+       }
+   }
+   
+   public void doUncheckedException(){
+       System.out.println(1/0);
+   }
+    
+}
+
+
+</ui:composition> 

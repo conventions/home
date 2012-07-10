@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+  &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Validation Panel&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="validationForm"&gt;
+                &lt;h:panelGroup style="width: 300px"&gt;
+                    &lt;center&gt;&lt;p:commandButton action="\#{validationMBean.submit}" id="bt" value="Submit" update="@form" style="width: 100px" /&gt;&lt;/center&gt;
+                    &lt;p:messages id="msg"/&gt;
+                    &lt;conventions:validationPanel style="background-color:lightblue;padding: 10px"&gt;
+                    &lt;center&gt;panel 1 - default error style &lt;/center&gt;
+                    &lt;h:panelGrid columns="2"&gt;
+                        &lt;h:outputText value="required input:"/&gt;      
+                        &lt;h:inputText value="\#{validationMBean.input1}" required="true"/&gt;
+                        &lt;h:outputText value="required input:"/&gt;      
+                        &lt;h:inputText value="\#{validationMBean.input2}" required="true"/&gt;
+                        &lt;h:outputLabel value="select:"/&gt;
+                        &lt;h:selectOneMenu value="\#{validationMBean.number}" required="true"&gt;
+                            &lt;f:selectItem itemLabel="" itemValue="\#{null}"/&gt;
+                            &lt;f:selectItem itemLabel="1" itemValue="\#{1}"/&gt;
+                            &lt;f:selectItem itemLabel="2" itemValue="\#{2}"/&gt;
+                            &lt;f:selectItem itemLabel="validatlion error" itemValue="error"/&gt;
+                        &lt;/h:selectOneMenu&gt;
+                    &lt;/h:panelGrid&gt;
+                &lt;/conventions:validationPanel&gt;
+                &lt;conventions:validationPanel errorStyle="background-color:red;"&gt;
+                    &lt;center&gt; panel 2 - custom style &lt;/center&gt;
+                    &lt;h:panelGrid columns="2"&gt;
+                        &lt;h:outputText value="required input:"/&gt;      
+                        &lt;h:inputText  value="\#{validationMBean.input3}"  required="true"/&gt;
+                        &lt;h:outputText value="required input:"/&gt;      
+                        &lt;h:inputText  value="\#{validationMBean.input4}"  required="true"/&gt;
+                        &lt;h:outputLabel value="select:"/&gt;
+                        &lt;h:selectOneMenu value="\#{validationMBean.number2}" required="true"&gt;
+                            &lt;f:selectItem itemLabel="" itemValue="\#{null}"/&gt;
+                            &lt;f:selectItem itemLabel="1" itemValue="\#{1}"/&gt;
+                            &lt;f:selectItem itemLabel="2" itemValue="\#{2}"/&gt;
+                            &lt;f:selectItem itemLabel="validatlion error" itemValue="error"/&gt;
+                        &lt;/h:selectOneMenu&gt;
+                    &lt;/h:panelGrid&gt;
+                &lt;/conventions:validationPanel&gt;
+                &lt;conventions:validationPanel  errorStyleClass="customStyleClass"&gt;
+                    &lt;center&gt; panel 3 - custom styleClass &lt;/center&gt;
+                    &lt;h:panelGrid columns="2"&gt;
+                        &lt;h:outputText value="required input:" /&gt;     
+                        &lt;h:inputText  value="\#{validationMBean.input5}"  required="true"/&gt;
+                        &lt;h:outputText value="required input:"   /&gt;   
+                        &lt;h:inputText  value="\#{validationMBean.input6}"  required="true"/&gt;
+                        &lt;h:outputLabel value="select:"/&gt;
+                        &lt;h:selectOneMenu value="\#{validationMBean.number3}" required="true"&gt;
+                            &lt;f:selectItem itemLabel="" itemValue="\#{null}"/&gt;
+                            &lt;f:selectItem itemLabel="1" itemValue="\#{1}"/&gt;
+                            &lt;f:selectItem itemLabel="2" itemValue="\#{2}"/&gt;
+                            &lt;f:selectItem itemLabel="validatlion error" itemValue="error"/&gt;
+                        &lt;/h:selectOneMenu&gt;
+                    &lt;/h:panelGrid&gt;
+                &lt;/conventions:validationPanel&gt;
+
+                &lt;/h:panelGroup&gt;
+            &lt;/h:form&gt;
+            &lt;style type="text/css"&gt;
+                .customStyleClass{
+                    height: 200px;
+                    background:url(\#{resource['images:error.png']}) no-repeat left;
+                     
+                }
+
+            &lt;/style&gt;
+            &lt;br/&gt;
+            &lt;span class="homeText"&gt;- highlight if one or more editable value holders inside validationPanel are invalid&lt;/span&gt;
+        &lt;/div&gt;
+</ui:composition>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+&lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/main.xhtml"&gt;
+
+     
+    &lt;ui:define name="content"&gt;
+    &lt;h:form id="simpleCrudForm"&gt;
+        &lt;p:outputPanel autoUpdate="true" style="text-align: right" layout="block"&gt;
+            &lt;framework:addButton  value="New Person" mbean="\#{simpleMBean}" style="visibility: \#{empty simpleMBean.beanState or simpleMBean.findState ? 'visible':'hidden'}"/&gt;
+            &lt;h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left"&gt;Simple Person Crud Home&lt;/h1&gt;
+        &lt;/p:outputPanel&gt;   
+        &lt;center&gt;
+            &lt;span class="homeText" style="font-family: arial; font-weight: bold"&gt; - Simplest way of crud an entity with conventions  &lt;/span&gt;&lt;br/&gt;    
+            &lt;span class="homeText" style="font-family: arial;font-weight: bold"&gt; - only managed bean and view is needed.&lt;/span&gt;     
+        &lt;/center&gt;
+        &lt;div class="entry"&gt;
+            &lt;p:outputPanel id="pageControl"&gt;
+                &lt;center&gt;
+                    &lt;p:messages id="msg"/&gt;
+                &lt;/center&gt;
+                &lt;p:outputPanel rendered="\#{empty simpleMBean.beanState or simpleMBean.findState}"&gt;
+                    &lt;ui:include src="simpleListUser.xhtml"/&gt;
+                &lt;/p:outputPanel&gt;  
+                &lt;p:outputPanel rendered="\#{simpleMBean.insertState or simpleMBean.updateState}"&gt;
+                    &lt;ui:include src="simpleAddUser.xhtml"/&gt;
+                &lt;/p:outputPanel&gt; 
+            &lt;/p:outputPanel&gt;
+            &lt;framework:messageHide messageId=":simpleCrudForm:msg" timeout="1600" /&gt;
+        &lt;/div&gt;
+    &lt;/h:form&gt;
+    &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+            
+            </ui:composition>

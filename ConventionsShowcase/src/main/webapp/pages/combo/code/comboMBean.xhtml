@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.jsf.conventions.showcase.controller;
+
+import com.jsf.conventions.qualifier.CustomService;
+import com.jsf.conventions.service.BaseService;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.util.MessagesController;
+import java.io.Serializable;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+
+/**
+ *
+ * @author Rafael M. Pestano Apr 4, 2011 7:58:11 PM
+ */
+@Named("comboMBean")
+@ViewAccessScoped
+public class ComboMBean implements Serializable {
+   
+    private List&lt;Person&gt; personList;
+    private List&lt;Person&gt; selectedPersonList;
+    private Person selectedPerson;
+    private Person selectedPersonRadio;
+    
+    @Inject
+    public void initList(@CustomService(entity=Person.class) BaseService service)
+        Person p = new Person(); 
+        p.setName("1");
+        p.setAge(1);
+        personList = service.findByExample(p,5);
+    }
+
+    public List&lt;Person&gt; getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List&lt;Person&gt; personList) {
+        this.personList = personList;
+    }
+
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
+
+    public Person getSelectedPersonRadio() {
+        return selectedPersonRadio;
+    }
+
+    public void setSelectedPersonRadio(Person selectedPersonRadio) {
+        this.selectedPersonRadio = selectedPersonRadio;
+    }
+
+    public List&lt;Person&gt; getSelectedPersonList() {
+        return selectedPersonList;
+    }
+
+    public void setSelectedPersonList(List&lt;Person&gt; selectedPersonList) {
+        this.selectedPersonList = selectedPersonList;
+    }
+    
+    
+    public void listener(){
+        if(selectedPerson != null){
+            MessagesController.addInfo("OneMenu2 selected:"+selectedPerson.getName());
+        }
+    }
+}
+
+</ui:composition>

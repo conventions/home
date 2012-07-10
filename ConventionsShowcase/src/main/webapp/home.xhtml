@@ -1,0 +1,55 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:fn="http://conventions.com/fnc"
+	template="templates/main.xhtml">
+	<ui:define name="content">
+		<h1 class="title ui-widget-header ui-corner-all">JSF Conventions Framework ShowCase</h1>
+		<div class="entry" style="line-height:200%">
+			JSF Conventions Framework is a set of components based on top of <b>CDI/CODI, EJB, JSF, Primefaces and Hibernate</b> build to facilitate the
+                        development of rich web applications.
+            <ul style="margin-top:5px;">
+                <li>Fast and easy crud creation.</li>
+                <li>True pagination out of the box.</li>
+                <li>Built in security (method authorization, page access and page block restrictions).</li>
+                <li>Built in stateless, stateful and non EJB Crud solution.</li>
+                <li>Code generation.</li>
+                <li>Non JavaEE application server support.</li>
+                <li>Set of UI components based on Primefaces.</li>
+                <li>Internationalization.</li>
+                <li>Exception Handling.</li>
+                <li>...and much more</li>
+            </ul>
+		</div>
+                <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+	</ui:define>
+      
+      <ui:define name="source">
+        <h3>Layout Source</h3>
+        <p:tabView>
+            <p:tab title="home.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="pages/code/home.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="main.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="pages/code/main.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="layout.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="pages/code/layout.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView> 
+      </ui:define>
+</ui:composition>

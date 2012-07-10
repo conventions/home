@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+  &lt;h:form id="themeForm"&gt;
+      &lt;h:panelGroup layout="block" style="text-align: center;margin: 5px"&gt;
+           &lt;framework:ajaxThemeChanger global="true" id="changer" listener="\#{themeMBean.onChangeTheme}"
+                 update="mainOutputPanel"
+                 mbean="\#{themeMBean}"
+                 themeList="\#{themeMBean.themeList}"
+                 style="width: 170px;text-align: center"/&gt;
+            &lt;p:commandLink value="AjaxThemeChanger Source" 
+                 process="@none" update="@none"
+                 global="false"
+                 style="font-weight: bold"
+                 onclick="themeSourceDlg.show()"/&gt;
+                                           
+                 &lt;/h:panelGroup&gt;                                              
+                 &lt;framework:uiBlocker source="select[id$='themeSelector_input']"
+                      target="\#all"
+                      message="Changing Theme..."
+                      startBlockEvent="change"/&gt;
+                &lt;p:remoteCommand name="clearStack"
+                     actionListener="\#{stateController.clearState}"  
+                     update="@none"
+                      process="@this"/&gt;
+     &lt;/h:form&gt;
+</ui:composition>

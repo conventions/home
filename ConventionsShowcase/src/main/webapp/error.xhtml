@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="templates/main.xhtml">
+
+
+    <ui:define name="content">
+
+        <center>
+            <h:form>
+
+                <h:link value="Unexpected error - click here to go home" 
+                        style="color: red;text-transform: uppercase"
+                        outcome="home.faces"/>
+                <br/>
+                
+                <p:panel header="Error Detail" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error">
+                     <br/>
+                     Error <span style="font-size: 14px;color: red;">#{errorName}</span>  
+                     <br/>
+                     <br/>
+                    <p:tabView >  
+                        <p:tab title="Message">  
+                            <h:panelGrid columns="2">  
+                                <h:outputLabel value="Error message:" />  
+                                <h:outputText value="#{errorMessage}" style="font-size: 1.2em;color:navy;" />  
+                            </h:panelGrid>  
+
+                        </p:tab>  
+                        <p:tab title="Detail">  
+                            <div style="overflow: auto; height: 300px; width: 700px;">  
+                                #{stacktrace}
+                            </div>  
+                        </p:tab>  
+                    </p:tabView>  
+                </p:panel>  
+            </h:form>
+        </center>
+        <span class="homeText">- \#{errorName}, \#{errorMessage} and \#{stacktrace} values are produced by Conventions framework.</span>
+    </ui:define>
+    
+       <ui:define name="source">
+           <h3> Error Page Source</h3>
+        <p:tabView>
+            <p:tab title="error.xhtml">
+                <pre name="code" class="xml">
+                     <ui:include src="pages/code/error.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView>
+       </ui:define>
+</ui:composition>

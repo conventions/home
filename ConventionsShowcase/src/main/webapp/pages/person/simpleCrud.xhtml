@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/main.xhtml">
+
+     
+    <ui:define name="content">
+        <h:form id="simpleCrudForm">
+         <p:outputPanel autoUpdate="true" style="text-align: right" layout="block">
+                <framework:addButton  value="New Person" mbean="#{simpleMBean}" style="visibility: #{empty simpleMBean.beanState or simpleMBean.findState ? 'visible':'hidden'}"/>
+                  &#160;  
+             <h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left">Simple Person Crud Home</h1>
+        </p:outputPanel>   
+        <center>
+            <span class="homeText" style="font-family: arial; font-weight: bold"> - Simplest way of crud an entity with conventions  </span><br/>    
+            <span class="homeText" style="font-family: arial;font-weight: bold"> - only managed bean and view is needed.</span>     
+        </center>
+        <div class="entry">
+                <p:outputPanel id="pageControl">
+                    <center>
+                        <p:messages id="msg"/>
+                    </center>
+                    <p:outputPanel rendered="#{empty simpleMBean.beanState or simpleMBean.findState}">
+                        <ui:include src="simpleListUser.xhtml"/>
+                    </p:outputPanel>  
+                    <p:outputPanel rendered="#{simpleMBean.insertState or simpleMBean.updateState}">
+                        <ui:include src="simpleAddUser.xhtml"/>
+                    </p:outputPanel> 
+                </p:outputPanel>
+                <framework:messageHide messageId=":simpleCrudForm:msg" timeout="1600" />
+        </div>
+    </h:form>
+    </ui:define>
+     <ui:define name="source">
+            <h3>Source</h3>
+            
+            <p:tabView>
+                   <p:tab title="SimpleMBean.java">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/simpleMBean.xhtml"/>  
+                    </pre>
+                   </p:tab>
+                <p:tab title="simpleCrud.xhtml">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/simpleCrud.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="listUser.xhtml">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/simpleListUser.xhtml"/>  
+                    </pre>
+                </p:tab>
+                <p:tab title="addUser.xhtml">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/simpleAddUser.xhtml"/>  
+                    </pre>
+                </p:tab>
+            </p:tabView>
+         </ui:define>
+</ui:composition>

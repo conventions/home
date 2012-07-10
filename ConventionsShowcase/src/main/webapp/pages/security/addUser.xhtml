@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="securityHome.xhtml">
+        <framework:statePusher mbean="#{securityMBean}" state="#{(empty securityMBean.entity or empty securityMBean.entity.id) ? insertState:updateState}" />
+        <!-- securityPage component will check if current user has access to this page if not will navigate user to the outcome and show the message as a fatal FacesMessage -->
+        <framework:securityPage rolesAllowed="admin" message="Only admin can access that page." outcome="securityList" removeLastBeanState="true"/>
+        <h1 class="title ui-widget-header ui-corner-all">#{securityMBean.insertState ? 'Create':'Edit'}  Person</h1>
+        <div  class="entry">
+                <center>
+                    <p:panel id="panelAdd" style="width: 300px;min-height:200px " header="#{securityMBean.insertState ? 'Create Person': 'Edit Person' }">
+                        <framework:backButton image="back_img"/>
+                        <h:panelGrid columns="2">
+                            <framework:label value="Name" requiredStyle="true" />
+                            <framework:inputText value="#{securityMBean.entity.name}" required="true" renderMessage="true"
+                                                 requiredMessage="the name is required" /> 
+                            <framework:label value="Lastname" requiredStyle="true" />
+                            <framework:inputText value="#{securityMBean.entity.lastname}" required="true" renderMessage="true"
+                                                 requiredMessage="the lastname is required" />
+                            <framework:label value="Age" /> 
+                            <p:spinner max="100" id="age"  size="17" min="0" stepFactor="1" value="#{securityMBean.entity.age}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" cellpadding="5px">
+                            <framework:saveButton  mbean="#{securityMBean}" process=":securityForm:panelAdd"
+                                                   update=":securityForm:msg :securityForm:panelAdd"  oncomplete="hideMsg(args)"/>
+                            <framework:resetButton mbean="#{securityMBean}" update=":securityForm:panelAdd"  />
+                            <framework:messageHide messageId=":securityForm:msg"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </center>
+        </div>
+</ui:composition>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+        <h1 class="title ui-widget-header ui-corner-all">Friends of #{personMBean.entity.name}</h1>
+        <div class="entry">
+                <p:panel id="panelFriend" style="width: 650px;min-height:300px " header="Friends">
+                  
+                    <center>
+                        <h:panelGrid columns="4">
+                            <framework:saveButton  mbean="#{personMBean}" process=":personCrudForm:panelFriend" ajax="true"
+                                                   update=":personCrudForm:panelFriend :personCrudForm:msg" oncomplete="hideMsg(args)">
+                            </framework:saveButton>
+                            <p:commandButton value="Back" action="#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back_img"/>
+                            <p:commandButton value="Go Home" action="#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/>
+                        </h:panelGrid>
+                        <framework:messageHide messageId=":personCrudForm:msg"/>
+                    </center>
+                    <p:dataTable value="#{personMBean.entity.friends}" widgetVar="tableVar" id="friendsTable" var="row" emptyMessage="You have no friends"
+                                 rowIndexVar="rowIndex" 
+                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20,30">
+
+                        <f:facet name="header">
+                            <p:commandButton value="Add Friends"
+                                             action="#{personMBean.initPersonSelectionModal}"
+                                             update=":findFriendDlg:findFriendDlg_panel"
+                                             oncomplete="findFriendDlg.show()"/>
+                        </f:facet>
+                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                Name
+                            </f:facet>
+                            <h:outputText value="#{row.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                Lastname
+                            </f:facet>
+                            <h:outputText value="#{row.lastname}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{row.age}" filterBy="#{row.age}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                Age
+                            </f:facet>
+                            <h:outputText value="#{row.age}"/>
+
+                        </p:column>
+                        <p:column style="width: 40px">
+                            <f:facet name="header">
+                                Remove
+                            </f:facet>
+                            <div align="center">
+                                <framework:removeLink mbean="#{personMBean}" row="#{row}" modal="removeFriendModal" />
+                            </div>
+                        </p:column>
+                        <f:facet name="footer">
+                            <framework:tableFooter renderAddButton="false" value="#{personMBean.entity.numFriends}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+                <framework:modalRemoval mbean="#{personMBean}"
+                                        update=":personCrudForm:panelFriend"
+                                        oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                        persistentRemove="false"
+                                        id="removeFriendModal"
+                                        widgetVar="removeFriendModal">
+                    <p:inputText value="#{personMBean.entityAux.name}" disabled="true"/>                    
+                </framework:modalRemoval>
+                
+            
+        </div>
+        
+        </ui:composition>

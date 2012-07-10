@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h1 class="title ui-widget-header ui-corner-all">History Stack Home</h1>
+        <div class="entry">
+            <h:form id="historyForm">
+                <p:menu styleClass="homeMenu">
+                    <p:submenu label="Trackable Managed Beans">
+                        <p:menuitem value="TrackableMBean1" action="#{trackablePersonMBean.go}" immediate="true" ajax="false"/>
+                        <p:menuitem value="TrackableMBean2" action="#{trackablePersonMBean2.go}" immediate="true" ajax="false" />
+                        <p:menuitem value="Ajax HistoryStack" action="#{ajaxStateMBean.go}" actionListener="#{stateController.clearState}" immediate="true" ajax="false"/>
+                    </p:submenu>
+                </p:menu>
+                     <center>
+                        <p:messages id="msg"/>
+                    </center>
+                <framework:messageHide messageId=":historyForm:msg" timeout="1600" />
+                <ui:insert/>
+            </h:form>  
+            <br/>
+            <span class="homeText">
+                      - bread crumb based solution for keeping track of you beans
+            </span>
+    
+        </div>
+         <script type="text/javascript">
+            jQuery(function() {
+                 historyNorthSize();
+              });
+        </script>
+    </ui:define>
+    
+    <ui:define name="source">
+        <h3>Source</h3>
+        <p:tabView >
+            <p:tab title="trackablePersonMBean.java">
+                <pre name="code" class="xml">
+                            <ui:include src="code/trackablePersonMBean.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="trackablePersonMBean2.java">
+                <pre name="code" class="xml">
+                            <ui:include src="code/trackablePersonMBean2.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="historyStackHome.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/historyStackHome.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="listUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/listUser.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="addUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/addUser.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="addFriend.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/addFriend.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="listUser2.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/listUser2.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="addUser2.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/addUser2.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="addFriend2.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/addFriend2.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+</ui:composition>

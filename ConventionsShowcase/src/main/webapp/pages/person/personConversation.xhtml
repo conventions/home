@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="../../templates/main.xhtml">
+
+    
+    <ui:define name="content">
+        <f:event type="preRenderView" listener="#{personConversationMBean.beginConversation}" />
+        <h:form id="personConversationForm">
+        <p:outputPanel autoUpdate="true" style="text-align: right" layout="block">
+                <framework:addButton  value="New Person" mbean="#{personConversationMBean}" style="visibility: #{empty personConversationMBean.beanState or personConversationMBean.findState ? 'visible':'hidden'}"/>
+                  &#160;  
+             <h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left">Person Conversation Home</h1>
+        </p:outputPanel>   
+        <center>
+            <span class="homeText" style="font-family: arial; font-weight: bold"> - Person Crud Conversation uses a Stateful EJB with @PersistenceContext(type=Extended) to control the hibernate session </span><br/>    
+            <span class="homeText" style="font-family: arial;font-weight: bold"> - It also uses <h:outputText style="text-decoration: underline" value=" url based navigation "/> to show the pages controlled by a <h:outputText style="text-decoration: underline" value=" ConversationScoped Managed Bean"/>.</span>     
+        </center>    
+        <div class="entry">
+                <p:outputPanel id="pageControl">
+                    <center>
+                        <p:messages id="msg"/>
+                    </center>
+
+                    <center>
+                        <p:inplace widgetVar="inplace" label="" id="inplace" style="font-weight: bold;color: black;">
+                            <p:panel id="panelFilter" header="Seach Person"  style="font-weight: normal;margin: 15px;width: 730px;text-align: left">
+                                <center>
+                                
+                                    <h:panelGrid columns="2" style="text-align: right" >
+                                        <h:outputLabel for="filter_name" value="Name:" />
+                                        <p:inputText value="#{personConversationMBean.paginator.filter.name}" id="filter_name" />
+                                        <h:outputLabel for="filter_lastname" value="Lastname:" />
+                                        <p:inputText value="#{personConversationMBean.paginator.filter.lastname}" id="filter_lastname" />
+                                        <h:outputLabel value="Age:"/>
+                                        <framework:inputText numeric="true" value="#{personConversationMBean.paginator.filter.age}"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" >
+                                            <framework:filterButton id="filter-bt" mbean="#{personConversationMBean}" update=":personConversationForm:tablePanel" process=":personConversationForm:panelFilter"
+                                                                    onclick="tableVar.getPaginator().setPage(0);" />  
+                                            <p:commandButton value="Hide Filters" global="false" update="inplace" >
+                                                <p:effect event="click" for="panelFilter" type="explode"/>
+                                            </p:commandButton>
+                                            <framework:uiBlocker source="button[id$='filter-bt']" target="div[id$='table']" message="filtering..."/>          
+                                    </h:panelGrid>
+                                </center>
+                            </p:panel>
+                        </p:inplace>  
+                        <p:panel id="tablePanel" style="overflow: auto;">
+                            <p:remoteCommand name="updateRowCount" process="@none" update="personConversationForm:table:tableFooter"/>    
+                            <p:dataTable value="#{personConversationMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex"
+                                         lazy="true"
+                                         rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}" 
+                                         rowsPerPageTemplate="5,10,15,20,30">
+                                <p:ajax event="page"  onstart="block('div[id$=table]','paging...')" oncomplete="unblock('div[id$=table]')"/>
+                                <p:ajax event="sort"  onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
+                                <p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]');updateRowCount();"/>
+                                <f:facet name="header">
+                                    <p:commandButton value="Show External Filters" onclick="inplace.show()" global="false"/>
+                                </f:facet>
+                                <p:column  sortBy="#{row.name}" filterBy="#{row.name}" >
+                                    <f:facet name="header">
+                                        Name
+                                    </f:facet>
+                                    <h:outputText value="#{row.name}"/>
+                                </p:column>
+                                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}"  >
+                                    <f:facet name="header">
+                                        Lastname
+                                    </f:facet>
+                                    <h:outputText value="#{row.lastname}"/>
+                                </p:column>
+
+                                <p:column sortBy="#{row.age}" filterBy="#{row.age}" filterStyle="width:50px">
+                                    <f:facet name="header">
+                                        Age
+                                    </f:facet>
+                                    <h:outputText value="#{row.age}"/>
+                                </p:column>
+                                   <p:column headerText="Created" sortBy="#{row.createDate}" >
+                                       <h:outputText value="#{row.createDate}">
+                                           <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                                       </h:outputText>
+
+                                   </p:column>
+                                   <p:column headerText="Updated" sortBy="#{row.updateDate}" >
+                                       <h:outputText value="#{row.updateDate}">
+                                           <f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/>
+                                       </h:outputText>
+                                   </p:column>
+                                   <p:column headerText="Version" sortBy="#{row.version}" >
+                                    <h:outputText value="#{row.version}"/>
+                                 </p:column>
+                                <p:column style="width: 40px">
+                                    <f:facet name="header">
+                                        Edit
+                                    </f:facet>
+                                    <div align="center">
+                                        <framework:editLink  mbean="#{personConversationMBean}" row="#{row}" update="@this"/>
+                                    </div>
+                                </p:column>
+                                <p:column style="width: 40px">
+                                    <f:facet name="header">
+                                        Remove
+                                    </f:facet>
+                                    <div align="center">
+                                        <framework:removeLink mbean="#{personConversationMBean}" row="#{row}"
+                                                              modal="removePersonModal"
+                                                              />
+                                    </div>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <framework:tableFooter mbean="#{personConversationMBean}" id="tableFooter" renderAddButton="true" footerHeight="30px"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:panel>
+                    </center>
+
+                </p:outputPanel>
+                <framework:messageHide messageId=":personConversationForm:msg" timeout="1600" />
+                <framework:modalRemoval id="removePersonModal" mbean="#{personConversationMBean}"
+                                        update=":personConversationForm:tablePanel :personConversationForm:removePersonModal:msgRemove"
+                                        oncomplete="removePersonModal.hide();hideMsg(args);"
+                                        header="Remove Person"
+                                        widgetVar="removePersonModal"
+                                        height="215"
+                                        >
+                    <center>
+                        <h:panelGrid id="removeGrid" columns="2" >
+                            <h:outputLabel for="rem_name" value="Name:"/>
+                            <p:inputText disabled="true" id="rem_name" value="#{personConversationMBean.entityAux.name}"/>
+                        </h:panelGrid>
+                    </center>   
+                </framework:modalRemoval>
+                
+          
+        </div>
+        </h:form>
+      
+         <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+    </ui:define>
+    <ui:define name="source">
+        <h3>Source</h3>
+        <p:tabView >
+             <p:tab title="PersonConversationMBean.java">
+                <pre name="code" class="xml">
+                                            <ui:include src="code/personConversationMBean.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="PersonService.java">
+                <pre name="code" class="xml">
+                                            <ui:include src="code/personService.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="PersonServiceImpl.java">
+                <pre name="code" class="xml">
+                             <ui:include src="code/personServiceImpl.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="personConversation.xhtml">
+                <pre name="code" class="xml">
+                             <ui:include src="code/personConversation.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="addUserConversation.xhtml">
+                <pre name="code" class="xml">
+                             <ui:include src="code/addUserConversation.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="addFriendConversation.xhtml">
+                <pre name="code" class="xml">
+                                            <ui:include src="code/addFriendConversation.xhtml"/>
+                </pre>
+            </p:tab>
+            <p:tab title="person.java">
+                    <pre name="code" class="xml">
+                                            <ui:include src="code/person.xhtml"/>  
+                    </pre>
+                </p:tab>
+        </p:tabView>
+    </ui:define>
+
+</ui:composition>

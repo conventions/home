@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+--&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"&gt;
+    
+         &lt;center&gt;
+          &lt;p:inplace widgetVar="inplace" label="" id="inplace" style="font-weight: bold;color: black;"&gt;
+                            &lt;p:panel id="panelFilter" header="Seach Person"  style="font-weight: normal;margin: 15px;width: 730px;text-align: left"&gt;
+                                &lt;center&gt;
+                                    &lt;h:panelGrid columns="2" style="text-align: right" &gt;
+                                        &lt;h:outputLabel for="filter_name" value="Name:" /&gt;
+                                        &lt;p:inputText value="\#{simpleMBean.paginator.filter.name}" id="filter_name" /&gt;
+                                        &lt;h:outputLabel for="filter_lastname" value="Lastname:" /&gt;
+                                        &lt;p:inputText value="\#{simpleMBean.paginator.filter.lastname}" id="filter_lastname" /&gt;
+                                        &lt;h:outputLabel value="Age:"/&gt;
+                                        &lt;framework:inputText numeric="true" value="\#{simpleMBean.paginator.filter.age}"/&gt;
+                                    &lt;/h:panelGrid&gt;
+                                    &lt;h:panelGrid columns="2" &gt;
+                                            &lt;framework:filterButton mbean="\#{simpleMBean}" id="filter-bt" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
+                                                                    oncomplete="tableVar.getPaginator().setPage(0);unblock('\#simpleCrudForm\\:table')" onstart="block('\#simpleCrudForm\\:table','filtering...')"/&gt;
+                                            &lt;p:commandButton value="Hide Filters" update="inplace"/&gt;
+                                    &lt;/h:panelGrid&gt;
+                                &lt;/center&gt;
+                            &lt;/p:panel&gt;
+                        &lt;/p:inplace&gt; 
+           
+           &lt;p:panel id="tablePanel" style="overflow: auto;"&gt;
+           &lt;p:dataTable value="\#{simpleMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" &gt;
+               
+               
+               &lt;f:facet name="header"&gt;
+                                    &lt;p:commandButton value="Show External Filters" onclick="inplace.show()"/&gt;
+                                &lt;/f:facet&gt;
+                 &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}"&gt;
+                    &lt;f:facet name="header"&gt;
+                        Name
+                    &lt;/f:facet&gt;
+                    &lt;h:outputText value="\#{row.name}"/&gt;
+                &lt;/p:column&gt;
+                &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" &gt;
+                    &lt;f:facet name="header"&gt;
+                        Lastname
+                    &lt;/f:facet&gt;
+                    &lt;h:outputText value="\#{row.lastname}"/&gt;
+                &lt;/p:column&gt;
+      
+                &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}" style="width: 50px" &gt;
+                    &lt;f:facet name="header"&gt;
+                        Age
+                    &lt;/f:facet&gt;
+                    &lt;h:outputText value="\#{row.age}"/&gt;
+                    
+                &lt;/p:column&gt;
+                &lt;p:column headerText="Created" sortBy="\#{row.createDate}" &gt;
+                    &lt;h:outputText value="\#{row.createDate}"&gt;
+                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                    &lt;/h:outputText&gt;
+                    
+                &lt;/p:column&gt;
+                 &lt;p:column headerText="Updated" sortBy="\#{row.updateDate}" &gt;
+                    &lt;h:outputText value="\#{row.updateDate}"&gt;
+                        &lt;f:convertDateTime locale="pt_BR" timeZone="America/Sao_paulo" pattern="dd/MM/yyyy HH:mm:ss"/&gt;
+                    &lt;/h:outputText&gt;
+                &lt;/p:column&gt;
+                &lt;p:column headerText="Version" sortBy="\#{row.version}" &gt;
+                    &lt;h:outputText value="\#{row.version}"/&gt;
+                 &lt;/p:column&gt;
+                &lt;p:column style="width: 40px"&gt;
+                    &lt;f:facet name="header"&gt;
+                        Edit
+                    &lt;/f:facet&gt;
+                    &lt;div align="center"&gt;
+                        &lt;framework:editLink mbean="\#{simpleMBean}" row="\#{row}" update=":simpleCrudForm:pageControl"/&gt;
+                    &lt;/div&gt;
+                &lt;/p:column&gt;
+                &lt;p:column style="width: 40px"&gt;
+                    &lt;f:facet name="header"&gt;
+                        Remove
+                    &lt;/f:facet&gt;
+                    &lt;div align="center"&gt;
+                        &lt;framework:removeLink mbean="\#{simpleMBean}" row="\#{row}" modal="removePersonModal" /&gt;
+                    &lt;/div&gt;
+                &lt;/p:column&gt;
+                  &lt;f:facet name="footer"&gt;
+                      &lt;framework:tableFooter mbean="\#{simpleMBean}" ajax="true"/&gt;
+                &lt;/f:facet&gt;
+           &lt;/p:dataTable&gt;
+            
+               &lt;/p:panel&gt;
+       &lt;/center&gt;    
+     &lt;framework:modalRemoval  mbean="\#{simpleMBean}"
+                                    update=":simpleCrudForm:removePersonModal:msgRemove :simpleCrudForm:tablePanel"
+                                    header="Remove Person"
+                                    id="removePersonModal"
+                                    widgetVar="removePersonModal"&gt;
+                  &lt;p:inputText value="\#{simpleMBean.entityAux.name}" disabled="true"/&gt;        
+    &lt;/framework:modalRemoval&gt; 
+    
+     
+&lt;/ui:composition&gt;
+</ui:composition>

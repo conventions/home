@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions">
+
+    <h1 class="title ui-widget-header ui-corner-all">Friends of #{ajaxStateMBean.entity.name}</h1>
+    <div class="entry">
+        <p:panel id="trackablePanelFriend" style="margin-top: 20px;overflow: auto;" header="Friends">
+            <center>
+                <framework:backButton update=":historyForm:pageControl"/>
+                <h:panelGrid columns="2">
+                    <framework:saveButton  mbean="#{ajaxStateMBean}" process=":historyForm:trackablePanelFriend" ajax="true"
+                                           update=":historyForm:trackablePanelFriend :historyForm:msg" oncomplete="hideMsg(args)" />
+                    <p:commandButton value="Go Home" action="#{ajaxStateMBean.setInitState}" actionListener="#{stateController.clearState}" update=":historyForm:pageControl" immediate="true"/>
+                </h:panelGrid>
+            </center>
+            <p:dataTable value="#{ajaxStateMBean.entity.friends}" widgetVar="tableVar" id="tableFriend" var="row" emptyMessage="You have no friends"
+                         rowIndexVar="rowIndex" 
+                         rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
+                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,30">
+
+                <f:facet name="header">
+                    <p:commandButton value="Add Friends"
+                                     action="#{ajaxStateMBean.initPersonSelectionModal}"
+                                     update=":findFriendDlg:findFriendDlg_panel"
+                                     oncomplete="findFriendDlg.show()"/>
+                </f:facet>
+                <p:column sortBy="#{row.name}" filterBy="#{row.name}" filterMatchMode="contains">
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value="#{row.name}"/>
+                </p:column>
+                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" filterMatchMode="contains">
+                    <f:facet name="header">
+                        Lastname
+                    </f:facet>
+                    <h:outputText value="#{row.lastname}"/>
+                </p:column>
+
+                <p:column sortBy="#{row.age}" filterBy="#{row.age}" filterMatchMode="contains">
+                    <f:facet name="header">
+                        Age
+                    </f:facet>
+                    <h:outputText value="#{row.age}"/>
+
+                </p:column>
+                <p:column style="width: 40px">
+                    <f:facet name="header">
+                        Remove
+                    </f:facet>
+                    <div align="center">
+                        <framework:removeLink mbean="#{ajaxStateMBean}" row="#{row}" modal="removeFriendModal"/>
+                    </div>
+                </p:column>
+                <f:facet name="footer">
+                    <framework:tableFooter value="#{ajaxStateMBean.entity.numFriends}"
+                                           renderAddButton="false"
+                                           />
+                </f:facet>
+            </p:dataTable>
+        </p:panel>
+        <framework:modalRemoval mbean="#{ajaxStateMBean}"
+                                update=":historyForm:removeFriendModal:msgRemove :historyForm:tableFriend"
+                                oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                persistentRemove="false"
+                                id="removeFriendModal"
+                                height="200"
+                                widgetVar="removeFriendModal">
+            <p:inputText value="#{ajaxStateMBean.entityAux.name}" disabled="true"/>
+        </framework:modalRemoval>
+
+    </div>
+    <script type="text/javascript">
+            jQuery(function() {
+                 historyNorthSize();
+              });
+        </script>
+</ui:composition>

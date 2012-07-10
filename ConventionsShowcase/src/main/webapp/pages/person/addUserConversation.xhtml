@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="../../templates/main.xhtml">
+
+    <ui:define name="content">
+        <h1 class="title ui-widget-header ui-corner-all">#{personConversationMBean.insertState ? 'Create':'Edit'}  Person</h1>
+        <div  class="entry">
+            <h:form id="addUser">
+                Conversation id: #{personConversationMBean.conversation.id}
+                <center>
+                    <p:panel id="panelAdd" style="width: 300px;min-height:200px " header="#{personConversationMBean.insertState ? 'Create Person': 'Edit Person' }">
+                        <center><p:messages id="msg"/></center>
+                        <h:panelGrid columns="2">
+                            <framework:label value="Name" requiredStyle="true" />
+                            <framework:inputText value="#{personConversationMBean.entity.name}" required="true" renderMessage="true"
+                                            requiredMessage="the name is required" /> 
+                            <framework:label value="Lastname" requiredStyle="true" />
+                            <framework:inputText value="#{personConversationMBean.entity.lastname}" required="true" renderMessage="true"
+                                            requiredMessage="the lastname is required" />
+                            <framework:label value="Age" requiredStyle="true" /> 
+                            <p:spinner max="100" id="age"  size="17" min="0" stepFactor="1" value="#{personConversationMBean.entity.age}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" cellpadding="5px">
+                            <framework:saveButton  mbean="#{personConversationMBean}" process=":addUser:panelAdd"
+                                                   update=":addUser:panelAdd"  oncomplete="hideMsg(args)"/>
+                            <framework:resetButton mbean="#{personConversationMBean}" update=":addUser:panelAdd" />
+                            <p:commandButton value="Back" action="#{personConversationMBean.back}" immediate="true" icon="ui-icon back_img"/>
+                            <framework:messageHide messageId=":addUser:msg"/>
+                        </h:panelGrid>
+                        <center>
+                            <p:commandButton value="Manage Friends"  action="#{personConversationMBean.associateFriends}" update=":addUser:panelAdd" />
+                        </center>
+                    </p:panel>
+                </center>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

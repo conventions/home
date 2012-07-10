@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+@SessionScoped
+@ManagedBean(name="themeMBean")
+public class ThemeMBean implements Serializable{
+    private String theme;
+    private List&lt;SelectItem&gt; themeList;
+    
+    @PostConstruct
+    public void initThemes(){
+        themeList = new ArrayList&lt;SelectItem&gt;();
+        themeList.add(new SelectItem("aristo", "Aristo"));
+        themeList.add(new SelectItem("blitzer", "Blitzer"));
+        themeList.add(new SelectItem("bluesky", "Bluesky"));
+        themeList.add(new SelectItem("casablanca", "Casablanca"));
+        themeList.add(new SelectItem("cupertino", "Cupertino"));
+        themeList.add(new SelectItem("redmond", "Redmond"));
+        themeList.add(new SelectItem("ui-darkness", "Ui-darkness"));
+        themeList.add(new SelectItem("vader", "Vader"));
+        theme = "ui-darkness";
+    }
+
+    public List&lt;SelectItem&gt; getThemeList() {
+        return themeList;
+    }
+
+    public void setThemeList(List&lt;SelectItem&gt; themeList) {
+        this.themeList = themeList;
+    }
+    
+    
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+
+    public void setEvenRow(String evenRow) {
+        this.evenRow = evenRow;
+    }
+
+   public void onChangeTheme(){
+       System.out.println("Selected theme:"+theme);
+       
+   } 
+    
+}
+</ui:composition>

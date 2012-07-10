@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+&lt;ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="../../templates/main.xhtml"&gt;
+
+    
+    &lt;ui:define name="content"&gt;
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Hibernate-JPA Integration Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+            &lt;h:form id="HibJPAForm"&gt;
+                &lt;p:outputPanel id="pageControl"&gt;
+                    &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                       &lt;center&gt;
+                    &lt;p:panel id="tablePanel" style="overflow: auto;"&gt;
+                           &lt;p:dataTable value="\#{hibernatePersonMBean.paginator.dataModel}" widgetVar="tableVar" id="hib-table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex" lazy="true"
+                                         rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                                &lt;f:facet name="header"&gt;
+                                    Hibernate Datatable
+                                &lt;/f:facet&gt;
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Name
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.name}"/&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Lastname
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.lastname}"/&gt;
+                                &lt;/p:column&gt;
+
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Age
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.age}"/&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column style="width: 7%"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Remove
+                                    &lt;/f:facet&gt;
+                                    &lt;div align="center"&gt;
+                                        &lt;framework:removeLink mbean="\#{hibernatePersonMBean}" row="\#{row}"
+                                                              modal="modalRemovePersonHib"/&gt;
+                                    &lt;/div&gt;
+                                &lt;/p:column&gt;
+                                
+                                &lt;f:facet name="footer"&gt;
+                                    &lt;div align="center" id="table_footer"&gt;
+                                            &lt;h:outputText style="font-size: 10px;padding-right: 5px;margin-right: 5px;"
+                                                          value="Records found: \#{hibernatePersonMBean.rowCount}"/&gt;
+                                    &lt;/div&gt;
+                                &lt;/f:facet&gt;
+                            &lt;/p:dataTable&gt;
+                        &lt;p:separator style="height: 3px"/&gt;
+                          &lt;p:dataTable value="\#{jpaPersonMBean.paginator.dataModel}" widgetVar="tableVar" id="jpa-table" var="row" emptyMessage="No person found"
+                                         rowIndexVar="rowIndex" lazy="true"
+                                         rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                                &lt;f:facet name="header"&gt;
+                                    JPA Datatable
+                                &lt;/f:facet&gt;
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Name
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.name}"/&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Lastname
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.lastname}"/&gt;
+                                &lt;/p:column&gt;
+
+                                &lt;p:column&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Age
+                                    &lt;/f:facet&gt;
+                                    &lt;h:outputText value="\#{row.age}"/&gt;
+
+                                &lt;/p:column&gt;
+                                &lt;p:column style="width: 7%"&gt;
+                                    &lt;f:facet name="header"&gt;
+                                        Remove
+                                    &lt;/f:facet&gt;
+                                    &lt;div align="center"&gt;
+                                        &lt;framework:removeLink mbean="\#{jpaPersonMBean}" row="\#{row}"
+                                                              modal="modalRemovePersonJPA"/&gt;
+                                    &lt;/div&gt;
+                                &lt;/p:column&gt;
+                                &lt;f:facet name="footer"&gt;
+                                    &lt;div align="center" id="table_footer"&gt;
+                                            &lt;h:outputText style="font-size: 10px;padding-right: 5px;margin-right: 5px;"
+                                                          value="Records found: \#{jpaPersonMBean.rowCount}"/&gt;
+                                    &lt;/div&gt;
+                                &lt;/f:facet&gt;
+                            &lt;/p:dataTable&gt;
+                           
+                        &lt;/p:panel&gt;
+                    &lt;/center&gt;
+                &lt;/p:outputPanel&gt;
+                &lt;framework:messageHide messageId="HibJPAForm:msg" timeout="1600" /&gt;
+                &lt;framework:modalRemoval id="modalRemovePersonHib" mbean="\#{hibernatePersonMBean}"
+                                        update=":HibJPAForm:pageControl :HibJPAForm:msg"
+                                        oncomplete="modalRemovePersonHib.hide();hideMsg(args);"
+                                        header="Hibernate Remove Person"
+                                        widgetVar="modalRemovePersonHib"
+                                        height="200"
+                                        &gt;
+                    &lt;center&gt;
+                        &lt;h:panelGrid id="removeGrid" columns="2" &gt;
+                            &lt;h:outputLabel for="rem_name" value="Name:"/&gt;
+                            &lt;p:inputText disabled="true" id="rem_name" value="\#{hibernatePersonMBean.entityAux.name}"/&gt;
+                        &lt;/h:panelGrid&gt;
+                    &lt;/center&gt;   
+                &lt;/framework:modalRemoval&gt;
+                &lt;framework:modalRemoval id="modalRemovePersonJPA" mbean="\#{jpaPersonMBean}"
+                                        update=":HibJPAForm:pageControl :HibJPAForm:msg"
+                                        oncomplete="modalRemovePersonJPA.hide();hideMsg(args);"
+                                        header="JPA Remove Person"
+                                        widgetVar="modalRemovePersonJPA"
+                                        height="200"
+                                        &gt;
+                    &lt;center&gt;
+                        &lt;h:panelGrid id="removeGrid" columns="2" &gt;
+                            &lt;h:outputLabel for="rem_name" value="Name:"/&gt;
+                            &lt;p:inputText disabled="true" id="rem_name" value="\#{jpaPersonMBean.entityAux.name}"/&gt;
+                        &lt;/h:panelGrid&gt;
+                    &lt;/center&gt;
+                &lt;/framework:modalRemoval&gt;
+            &lt;/h:form&gt;
+
+
+        &lt;/div&gt;
+    &lt;/ui:define&gt;
+
+&lt;/ui:composition&gt;
+</ui:composition> 

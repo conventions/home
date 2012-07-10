@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/templates/main.xhtml">
+
+    
+    <ui:define name="content">
+      <script type="text/javascript">
+                     jQuery(function() {
+                             resetNorthSize();
+                        });
+                </script>
+        <style>
+            .col1{
+                width: 50px;
+            }
+            .col2{
+                width: auto;
+            }
+        </style>
+        <h1 class="title ui-widget-header ui-corner-all">Combo Home</h1>
+        <div class="entry">
+           
+            <h:form id="comboForm">
+                     <center>
+                        <p:messages id="msg"/>
+                    </center>
+                <framework:messageHide messageId=":comboForm:msg" timeout="1600" />
+                <h:panelGrid columns="3" columnClasses="col1,col2,col2">
+                     <h:outputLabel for="comboForm:combo:comboOneMenu" value="OneMenu:" style="text-align: right"  />
+                     <framework:combo id="combo" width="150" list="#{comboMBean.personList}" value="#{comboMBean.selectedPerson}" update=":comboForm:selected" converter="personConverter"/>
+                     <h:outputText id="selected" value="Selected OneMenu: #{comboMBean.selectedPerson.name}"/>
+                     <h:outputLabel  style="text-align: right" for="comboForm:combo2:comboOneMenu" value="OneMenu2:"/>      
+                     <framework:combo list="#{comboMBean.personList}" id="combo2" value="#{comboMBean.selectedPerson}" update=":comboForm:selected2 :headerForm:growl" listener="#{comboMBean.listener()}"/>
+                     <h:outputText id="selected2" value="Selected OneMenu2: #{comboMBean.selectedPerson.name}"/>
+                     <h:outputLabel value="OneRadio:"/>
+                     <framework:combo list="#{comboMBean.personList}" type="oneRadio" value="#{comboMBean.selectedPerson}"  update=":comboForm:selectedRadio" />
+                     <h:outputText id="selectedRadio" value="Selected Radio: #{comboMBean.selectedPerson.name}"/>
+                     <h:outputLabel value="OneList:"/>
+                     <framework:combo list="#{comboMBean.personList}" type="oneList" value="#{comboMBean.selectedPerson}"  update=":comboForm:selectedOneList" />
+                     <h:outputText id="selectedOneList" value="Selected OneList: #{comboMBean.selectedPerson.name}"/>
+                     <h:outputLabel value="ManyMenu:"/>
+                     <ui:remove><!-- SELECT MANY NEED 'MBEAN' ATTRIBUTE BECAUSE OF MOJARRA ISSUE:http://java.net/jira/browse/JAVASERVERFACES-2047  --> </ui:remove>
+                     <framework:combo list="#{comboMBean.personList}" mbean="#{comboMBean}"  type="manyMenu" value="selectedPersonList"   update=":comboForm:personTable" /> 
+                     <h:column/>
+                     <h:outputLabel value="ManyCheck:"/>
+                     <framework:combo list="#{comboMBean.personList}" mbean="#{comboMBean}" type="manyCheck" value="selectedPersonList"   update=":comboForm:personTable" />
+                          <h:column/>
+                     <h:outputLabel value="CheckMenu:"/>
+                     <framework:combo list="#{comboMBean.personList}" mbean="#{comboMBean}" type="checkMenu" value="selectedPersonList"   update=":comboForm:personTable" />
+                          <h:column/>
+                </h:panelGrid>
+                <p:separator/>
+                <center>
+                    <p:dataTable id="personTable" value="#{comboMBean.selectedPersonList}" var="p" emptyMessage="No person selected">
+                        <f:facet name="header">
+                            Selected Person list
+                        </f:facet>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{p.name}"/>
+                        </p:column>
+                        <p:column headerText="age">
+                            <h:outputText value="#{p.age}"/>
+                        </p:column>
+                    </p:dataTable>
+                </center>
+            </h:form>  
+            <br/>
+            <span class="homeText">
+                      - Combo component render all types of selects (one,many,listBox,radio).<br/>
+                      - show the list of values in a very simple to use combo component. <br/>
+                      - the component just expects a list of entities which extends AbstractBaseEntity or one of its subclasses<br/>
+                      - generic entity converter is used by default
+                      
+            </span>
+             
+        </div>
+    </ui:define>
+    <ui:define name="source">
+         <h3>Source</h3>
+
+             <p:tabView >
+                <p:tab title="ComboMBean.java">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/comboMBean.xhtml"/>  
+                    </pre>
+                </p:tab>
+                   <p:tab title="comboHome.xhtml">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/comboHome.xhtml"/>  
+                    </pre>
+                </p:tab>
+                  <p:tab title="personConverter.java">
+                    <pre name="code" class="xml">
+                          <ui:include src="code/personConverter.xhtml"/>  
+                    </pre>
+                </p:tab>
+                   <p:tab title="person.java">
+                    <pre name="code" class="xml">
+                              <ui:include src="code/person.xhtml"/>  
+                    </pre>
+                </p:tab>
+            </p:tabView>
+    </ui:define>
+</ui:composition>

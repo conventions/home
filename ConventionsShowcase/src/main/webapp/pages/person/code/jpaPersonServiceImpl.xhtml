@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+package com.jsf.conventions.showcase.service.impl;
+
+import com.jsf.conventions.model.ConventionsDataModel;
+import com.jsf.conventions.qualifier.JPAService;
+import com.jsf.conventions.service.impl.JPAServiceImpl;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.showcase.service.PersonService;
+import java.util.Map;
+import javax.inject.Named;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import org.primefaces.model.SortOrder;
+
+/**
+ *
+ * @author Rafael M. Pestano jun 2, 2011 8:35:41 AM
+ */
+@Named("jpaPersonService")
+@JPAService
+public class PersonServiceJPAImpl extends JPAServiceImpl&lt;Person, Long&gt; implements
+        PersonService {
+
+
+    @Override
+    public ConventionsDataModel&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+        CriteriaQuery criteria = this.getCriteriaQuery();
+        CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+        if (externalFilter != null &amp;&amp; !externalFilter.isEmpty()) {
+            String name = (String) externalFilter.get("name");
+            if (name != null &amp;&amp; !name.trim().equals("")) {
+                criteria.select(criteriaBuilder.like(criteria.from(Person.class).get("name"), name));
+            }
+            String lastname = (String) externalFilter.get("lastname");
+            if (lastname != null &amp;&amp; !lastname.trim().equals("")) {
+                criteria.select(criteriaBuilder.like(criteria.from(Person.class).get("lastname"), lastname));
+            }
+            String age = (String) externalFilter.get("age");
+            if (age != null &amp;&amp; !age.trim().equals("")) {
+                criteria.select(criteriaBuilder.equal(criteria.from(Person.class).get("age"), new Integer(age)));
+            }
+        }
+        /* config prime datatable filter columns */
+        if (filters != null &amp;&amp; !filters.isEmpty()) {
+            if (filters.get("name") != null) {
+                criteria.select(criteriaBuilder.like(criteria.from(Person.class).get("name"), (String) filters.get("name")));
+            }
+            if (filters.get("lastname") != null) {
+                criteria.select(criteriaBuilder.like(criteria.from(Person.class).get("lastname"), (String) filters.get("lastname")));
+            }
+
+            if (filters.get("age") != null) {
+                criteria.select(criteriaBuilder.equal(criteria.from(Person.class).get("age"), new Integer((String) filters.get("age"))));
+            }
+        }
+        return JPADao.findPaginated(first, pageSize, sortField, sortOrder, criteria);
+    }
+
+    @Override
+    public boolean alowDeletePerson(Person entity) {
+        if (entity.getAge() &gt; 60) {
+            return false;
+        }
+        return true;
+    }
+}
+
+</ui:composition> 

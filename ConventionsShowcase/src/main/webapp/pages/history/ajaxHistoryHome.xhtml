@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+    <ui:define name="content">
+        <ui:param name="defaultUpdate" value=":historyForm:pageControl"/>
+        <h:form id="historyForm">
+         <p:outputPanel autoUpdate="true" style="text-align: right" layout="block">
+                <framework:addButton  value="New Person" mbean="#{ajaxStateMBean}" style="visibility: #{empty ajaxStateMBean.beanState or ajaxStateMBean.findState ? 'visible':'hidden'}"/>
+                  &#160;  
+             <h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left">Ajax History Stack Home</h1>
+          </p:outputPanel>   
+        <div class="entry">
+                <p:outputPanel id="pageControl">
+                <center>
+                    <p:messages id="msg"/>
+                </center>
+                <framework:messageHide messageId=":historyForm:msg" timeout="1600" />
+                    <p:outputPanel rendered="#{empty ajaxStateMBean.beanState or ajaxStateMBean.initState}">
+                        <p:commandButton value="Go List" action="#{ajaxStateMBean.setFindState}" update=":historyForm:pageControl"/>
+                    </p:outputPanel>
+                    <p:outputPanel rendered="#{ajaxStateMBean.findState}">
+                        <ui:include src="/pages/history/ajaxListUser.xhtml"/>
+                    </p:outputPanel>
+                    <p:outputPanel rendered="#{ajaxStateMBean.insertState or ajaxStateMBean.updateState}">
+                        <ui:include src="/pages/history/ajaxAddUser.xhtml"/>
+                    </p:outputPanel>
+                    <p:outputPanel rendered="#{ajaxStateMBean.friendState}">
+                        <ui:include src="/pages/history/ajaxAddFriend.xhtml"/>
+                    </p:outputPanel>
+                </p:outputPanel>
+            <br/>
+            <span class="homeText">
+                      - Ajaxyfied history stack to avoid full page loads 
+            </span>
+    
+        </div>
+        </h:form>  
+         <script type="text/javascript">
+            jQuery(function() {
+                 historyNorthSize();
+              });
+        </script>
+    </ui:define>
+    
+    <ui:define name="popup">
+            <framework:modal id="findFriendDlg" header="Find Friends"
+                             widgetVar="findFriendDlg"
+                             mbean="#{personSelectionModalMBean}"
+                             closeListener="#{personSelectionModalMBean.clearSelection}" 
+                             update=":historyForm:trackablePanelFriend"
+                             autoUpddate="false"
+                             >
+                    
+                    <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 lazy="true"
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowKey="#{row.id}"
+                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 rowsPerPageTemplate="5,10,15,20,30">
+
+                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Name
+                            </f:facet>
+                            <h:outputText value="#{row.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Lastname
+                            </f:facet>
+                            <h:outputText value="#{row.lastname}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{row.age}" filterBy="#{row.age}"
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Age
+                            </f:facet>
+                            <h:outputText value="#{row.age}"/>
+                        </p:column>
+                    </p:dataTable>
+            </framework:modal>
+       <script type="text/javascript">
+            historyNorthSize();
+        </script>
+    </ui:define>
+    
+    <ui:define name="source">
+        <h3>Source</h3>
+        <p:tabView >
+            <p:tab title="AjaxStateMBean.java">
+                <pre name="code" class="xml">
+                            <ui:include src="code/ajaxHistoryMBean.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="ajaxHistoryHome.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/ajaxHistoryHome.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="ajaxListUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/ajaxListUser.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="ajaxAddUser.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/ajaxAddUser.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="ajaxAddFriend.xhtml">
+                <pre name="code" class="xml">
+                            <ui:include src="code/ajaxAddFriend.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+</ui:composition>

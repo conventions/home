@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+&lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/main.xhtml"&gt;
+
+     
+    &lt;ui:define name="content"&gt;
+       &lt;h:form id="personCrudForm"&gt; 
+            &lt;p:outputPanel autoUpdate="true" style="text-align: right" layout="block"&gt;
+                &lt;framework:addButton  value="New Person" mbean="\#{personMBean}" style="visibility: \#{empty personMBean.beanState or personMBean.findState ? 'visible':'hidden'}"/&gt;
+             &lt;h1 class="title ui-widget-header ui-corner-all" style="margin-top: -35px;text-align: left"&gt;Person Crud Home&lt;/h1&gt;
+             &lt;/p:outputPanel&gt;   
+            
+        &lt;center&gt;
+            &lt;span class="homeText" style="font-family: arial; font-weight: bold"&gt; - Person Crud uses a Stateful EJB with @PersistenceContext(type=Extended) to control the hibernate session &lt;/span&gt;&lt;br/&gt;    
+            &lt;span class="homeText" style="font-family: arial;font-weight: bold"&gt; - It also uses &lt;h:outputText style="text-decoration: underline" value=" state oriented navigation "/&gt; to show the pages controlled by a &lt;h:outputText style="text-decoration: underline" value=" ViewAcessScoped Managed Bean"/&gt;.&lt;/span&gt;     
+        &lt;/center&gt;
+        &lt;div class="entry"&gt;
+                &lt;p:outputPanel id="pageControl"&gt;
+                    &lt;center&gt;
+                        &lt;p:messages id="msg"/&gt;
+                    &lt;/center&gt;
+                    &lt;p:outputPanel rendered="\#{empty personMBean.beanState or personMBean.findState}"&gt;
+                        &lt;ui:include src="listUser.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt;  
+                    &lt;p:outputPanel rendered="\#{personMBean.insertState or personMBean.updateState}"&gt;
+                        &lt;ui:include src="addUser.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt; 
+                    &lt;p:outputPanel rendered="\#{personMBean.friendState}"&gt;
+                        &lt;ui:include src="addFriend.xhtml"/&gt;
+                    &lt;/p:outputPanel&gt; 
+                &lt;/p:outputPanel&gt;
+                &lt;framework:messageHide messageId=":personCrudForm:msg" timeout="1600" /&gt;
+        &lt;/div&gt;
+        &lt;/h:form&gt;
+    &lt;/ui:define&gt;
+    &lt;ui:define name="popup"&gt;
+            &lt;framework:modal id="findFriendDlg" header="Find Friends"
+                             widgetVar="findFriendDlg"
+                             mbean="\#{personSelectionModalMBean}"
+                             closeListener="\#{personSelectionModalMBean.clearSelection}"
+                             invokerName="personMBean"
+                             update=":personCrudForm:panelFriend"
+                             &gt;
+                &lt;p:dataTable value="\#{personSelectionModalMBean.paginator.dataModel}" 
+                                 selection="\#{personSelectionModalMBean.selectedPeople}"
+                                 id="selectionTable" var="row" 
+                                 emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 rowKey="\#{row.id}"
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
+                                 rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
+                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                                 {LastPageLink} {RowsPerPageDropdown}"
+                                 selectionMode="multiple"
+                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
+
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
+                                  filterMatchMode="contains"&gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;f:facet name="footer"&gt;
+                            &lt;framework:tableFooter mbean="\#{personSelectionModalMBean}" renderAddButton="false"/&gt;
+                        &lt;/f:facet&gt;
+                    &lt;/p:dataTable&gt;
+            &lt;/framework:modal&gt;
+    &lt;/ui:define&gt;
+     &lt;ui:define name="source"&gt;
+            &lt;h3&gt;Source&lt;/h3&gt;
+
+            &lt;p:tabView &gt;
+                  &lt;p:tab title="PersonMBean.java"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/personMBean.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                 &lt;p:tab title="PersonServiceImpl.java"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                             &lt;ui:include src="code/personServiceImpl.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+              
+                &lt;p:tab title="PersonService.java"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/personService.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="personCrud.xhtml"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/personCrud.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="listUser.xhtml"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/listUser.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="addUser.xhtml"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/addUser.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="addFriend.xhtml"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/addFriend.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="person.java"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                                            &lt;ui:include src="code/person.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+                &lt;p:tab title="PersonSelectionModalMBean.java"&gt;
+                    &lt;pre name="code" class="xml"&gt;
+                            &lt;ui:include src="../modal/code/personSelectionModalMBean.xhtml"/&gt;  
+                    &lt;/pre&gt;
+                &lt;/p:tab&gt;
+               
+            &lt;/p:tabView&gt;
+         &lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+            
+            </ui:composition>

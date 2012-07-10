@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+package com.jsf.conventions.showcase.service.impl;
+
+import com.jsf.conventions.model.ConventionsDataModel;
+import com.jsf.conventions.service.impl.StatelessHibernateServiceImpl;
+import com.jsf.conventions.showcase.model.Person;
+import com.jsf.conventions.showcase.service.StatelessPersonService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Named;
+import org.hibernate.Hibernate;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.loader.custom.ScalarReturn;
+import org.primefaces.model.SortOrder;
+
+/**
+ *
+ * @author Rafael M. Pestano Mar 21, 2011 4:35:41 PM
+ */
+@Named
+public class StatelessPersonServiceImpl extends StatelessHibernateServiceImpl&lt;Person, Long&gt; implements
+        StatelessPersonService {
+
+
+   /**
+     * Override this for complex filtering(associations)
+     * or to change the default behavior(@see hibernateDao#addBasicFilterRestrictions)  
+     * otherwise you dont need to override this method, see simpleMBean 
+     * which has no service and also has filtering 
+     */           
+    @Override
+    public ConventionsDataModel&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+        DetachedCriteria dc = getDetachedCriteria();
+        if(sortField == null || "".equals(sortField)){
+            sortField = "name";
+        }
+        if (externalFilter != null &amp;&amp; !externalFilter.isEmpty()) {
+            String name = (String) externalFilter.get("name");
+            if (name != null) {
+                dc.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
+            }
+            String lastname = (String) externalFilter.get("lastname");
+            if (lastname != null) {
+                dc.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
+            }
+            String age = (String) externalFilter.get("age");
+            if (age != null &amp;&amp; !age.trim().equals("")) {
+                dc.add(Restrictions.eq("age", new Integer(age)));
+            }
+        }
+        /* config prime datatable filter columns */
+        if (filters != null &amp;&amp; !filters.isEmpty()) {
+            if (filters.get("name") != null) {
+                dc.add(Restrictions.ilike("name", (String) filters.get("name"), MatchMode.ANYWHERE));
+            }
+            if (filters.get("lastname") != null) {
+                dc.add(Restrictions.ilike("lastname", (String) filters.get("lastname"), MatchMode.ANYWHERE));
+            }
+
+            if (filters.get("age") != null) {
+                dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
+            }
+        }
+        return super.hibernateDao.findPaginated(first, pageSize, sortField, sortOrder, dc);
+    }
+
+    @Override
+    public boolean alowDeletePerson(Person p) {
+        if (p.getAge() &gt; 60) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public void remove(Person entity) {
+        if(this.alowDeletePerson(entity)){
+            super.remove(entity);
+        }
+        else{  /* the exception is handled by the framework and will add an error message to FacesContext */
+            throw new BusinessException("Not allowed to remove person above 60 year old.");
+        }
+    }
+
+    @Override
+    public List&lt;Person&gt; findFriends(final Long personID) {
+       String query = "select p.friends_id from person_person p where p.person_id = :id";
+       Map params = new HashMap(){{put("id",personID);}};
+       List&lt;Long&gt; friendsId = hibernateDao.findByNativeQuery(query, params,null,null,new ScalarReturn(Hibernate.LONG, "friends_id")); 
+        
+       if(friendsId != null &amp;&amp; !friendsId.isEmpty()){
+           DetachedCriteria dc = getDetachedCriteria();
+           dc.add(Restrictions.in("id", friendsId));
+           return hibernateDao.findByCriteria(dc);
+       }
+
+       return null;
+    }
+     
+}
+
+    </ui:composition>

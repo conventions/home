@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package framework.showcase.controller;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
+
+/**
+ *
+ * @author Rafael M. Pestano Apr 4, 2011 7:58:11 PM
+ */
+@ManagedBean(name="inputMBean")
+@ViewScoped
+public class InputMBean {
+   private String requiredInput;
+   private String sizedInput;
+   private String number;
+   private String password;
+
+    @NotEmpty(message="This field is required")
+    public String getRequiredInput() {
+        return requiredInput;
+    }
+
+    public void setRequiredInput(String requiredInput) {
+        this.requiredInput = requiredInput;
+    }
+
+    @Size(min=6,max=100,message="Minimum size 6 and maximum size is 100")
+    public String getSizedInput() {
+        return sizedInput;
+    }
+
+    public void setSizeInput(String sizedInput) {
+        this.sizedInput = sizedInput;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    @Size(min=6,max=100,message="Minimum size 6 and maximum size is 100")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+}
+
+
+</ui:composition> 
