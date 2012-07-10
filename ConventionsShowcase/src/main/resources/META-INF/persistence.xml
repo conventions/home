@@ -3,9 +3,9 @@
   <persistence-unit name="conventionsPU" transaction-type="JTA">
     <description>Conventions Persistence Unit</description>
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-<!--     <jta-data-source>jdbc/__default</jta-data-source> -->
+     <jta-data-source>jdbc/__default</jta-data-source> 
 <!-- <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>-->
-    <jta-data-source>java:jboss/datasources/conventionsDS</jta-data-source>
+<!--    <jta-data-source>java:jboss/datasources/conventionsDS</jta-data-source>-->
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
