@@ -573,7 +573,7 @@
 
             </plugin>-->
         </plugins>
-        <finalName>ConventionsShowcase</finalName>
+        <finalName>conventions-showcase</finalName>
     </build>
 
 </project>
