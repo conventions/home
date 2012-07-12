@@ -5,8 +5,8 @@
 
 package com.jsf.conventions.bean;
 
-import com.jsf.conventions.model.AbstractBaseEntity;
 import java.io.Serializable;
+
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
@@ -16,7 +16,10 @@ import javax.inject.Inject;
  */
 public abstract class ConversationalMBean<T> extends BaseMBean<T> implements Serializable {
     
-    @Inject
+ 
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
     protected Conversation conversation;
      
     

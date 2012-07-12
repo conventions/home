@@ -5,6 +5,7 @@ import com.jsf.conventions.util.ResourceBundle;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -51,9 +52,13 @@ public class ResourceBundleProvider implements Serializable {
             try {
                 currentBundle = new ResourceBundle(getClass().getResourceAsStream(baseName + "_" + language + ".properties"));
                 bundleMap.put(language,currentBundle);
-                log.info("Conventions: loaded resource bundle:"+baseName + "_" + language + ".properties");
+                if(log.isLoggable(Level.FINE)){
+                	log.fine("Conventions: loaded resource bundle:"+baseName + "_" + language + ".properties");
+                }
             } catch (Exception e) {
-                log.warning("Conventions: problems trying to find resource bundle:"+baseName + "_" + language + ".properties");
+            	if(log.isLoggable(Level.WARNING)){
+            		log.warning("Conventions: problems trying to find resource bundle:"+baseName + "_" + language + ".properties");
+            	}
             }
         }
 
