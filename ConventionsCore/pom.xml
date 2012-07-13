@@ -69,6 +69,7 @@
                 <version>${myfaces.codi.version}</version>
                  <scope>provided</scope>
           </dependency>
+          
 <!--        <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-impl</artifactId>
