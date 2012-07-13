@@ -7,8 +7,30 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Conventions</name>
-    <url>http://code.google.com/p/jsf-conventions-framework/</url>
+    <url>https://github.com/rmpestano/conventions/</url>
      
+      <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/rmpestano/conventions/issues</url>
+    </issueManagement>
+
+    <inceptionYear>2011</inceptionYear>   
+    
+    <scm>
+        <connection>scm:git:git://github.com/rmpestano/conventions.git</connection>
+        <developerConnection>scm:git:https://rmpestano@github.com/rmpestano/conventions.git</developerConnection>
+        <url>https://github.com/rmpestano/conventions.git</url>
+    </scm>
+    
     <properties>
         <mojarra.version>2.1.5</mojarra.version>
         <myfaces.version>2.1.5</myfaces.version>
