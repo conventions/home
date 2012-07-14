@@ -142,7 +142,7 @@
         </repository>
         <repository>
             <id>conventions-repo</id>
-            <url>http://jsf-conventions-framework.googlecode.com/hg/repo</url>
+            <url>https://github.com/rmpestano/conventions/tree/master/repo</url>
             <layout>default</layout>
         </repository>
 

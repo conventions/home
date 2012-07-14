@@ -79,7 +79,7 @@ public class StateController implements Serializable{
     
     /**
      * Remove all itens in 'front' of the clicked item 
-     * @param clicked item
+     * @param item
      */
     public void pullStateItem(StateItem item){
         int itemIndex = stateItens.indexOf(item);
