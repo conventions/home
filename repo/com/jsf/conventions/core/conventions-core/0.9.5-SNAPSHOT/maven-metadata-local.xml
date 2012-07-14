@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata modelVersion="1.1.0">
+<metadata>
   <groupId>com.jsf.conventions.core</groupId>
   <artifactId>conventions-core</artifactId>
   <version>0.9.5-SNAPSHOT</version>
@@ -7,24 +7,6 @@
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20120710013037</lastUpdated>
-    <snapshotVersions>
-      <snapshotVersion>
-        <classifier>sources</classifier>
-        <extension>jar</extension>
-        <value>0.9.5-SNAPSHOT</value>
-        <updated>20120710013037</updated>
-      </snapshotVersion>
-      <snapshotVersion>
-        <extension>jar</extension>
-        <value>0.9.5-SNAPSHOT</value>
-        <updated>20120710013037</updated>
-      </snapshotVersion>
-      <snapshotVersion>
-        <extension>pom</extension>
-        <value>0.9.5-SNAPSHOT</value>
-        <updated>20120710013037</updated>
-      </snapshotVersion>
-    </snapshotVersions>
+    <lastUpdated>20120714180702</lastUpdated>
   </versioning>
 </metadata>
