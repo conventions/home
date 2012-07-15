@@ -1,6 +1,0 @@
-[submodule "core"]
-	path = core
-	url = https://github.com/rmpestano/conventions-core.git
-[submodule "showcase"]
-	path = showcase
-	url = https://github.com/rmpestano/conventions-showcase.git
