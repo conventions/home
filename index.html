@@ -1,74 +1,180 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Conventions : Conventions Framework is a set of components based on top of JSF 2.x, CDI, EJB(optional), Primefaces and Hibernate build to facilitate the development of rich web based applications." />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Conventions</title>
+    <meta charset="utf-8">
+    <title>Conventions Framework</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
   </head>
 
   <body>
+    <div class="container">
+      <header class="jumbotron masthead">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/rmpestano/conventions">View on GitHub</a>
+        <div class="inner">
+          <h1>Conventions Framework</h1>
+          <p>Easy development of java enterprise rich web applications.</p>
+          <p>
+		    <center>
+				<a href="https://github.com/rmpestano/conventions-core" target="_blank" class="btn btn-primary btn-large">&nbsp;&nbsp;&nbsp;&nbsp;View project on GitHub &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a href="http://conventions-rpestano.rhcloud.com/conventions/" target="_blank" class="btn btn-primary btn-large">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Online Showcase<small> (openshift cloud)</small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+			<br/>
+			<br/>
+            <a href="http://search.maven.org/remotecontent?filepath=org/conventionsframework/conventions-core/0.9.6/conventions-core-0.9.6.jar" class="btn btn-large">&nbsp;Download Conventions <small>(v0.9.6)</small></a>
+			<a href="https://oss.sonatype.org/content/repositories/snapshots/org/conventionsframework/conventions-core/0.9.7-SNAPSHOT/" target="_blank" class="btn btn-large">Download Conventions <small>(v0.9.7-SNAPSHOT)</small></a>
+			</center>
+          </p>
+        </div>
 
-          <h1 id="project_title">Conventions</h1>
-          <h2 id="project_tagline">Conventions Framework is a set of components based on top of JSF 2.x, CDI, EJB(optional), Primefaces and Hibernate build to facilitate the development of rich web based applications.</h2>
+        <div class="bs-links">
+          <ul class="quick-links">
+            <li><a href="https://github.com/rmpestano/conventions-core/wiki" target="_blank">Read online documentation <small>(pending)</small></a></li>
+            <li><a href="https://github.com/rmpestano/conventions-core/issues?state=open" target="_blank">Submit issues</a></li>
+            <li><a href="https://github.com/rmpestano/conventions-core/zipball/master">Download source zip</a></li>
+          </ul>
+          <ul class="quick-links">
+            <li>
+              <iframe class="github-btn" src="http://markdotto.github.com/github-buttons/github-btn.html?user=rmpestano&repo=conventions-core&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="112px" height="20px"></iframe>
+            </li>
+            <li>
+              <iframe class="github-btn" src="http://markdotto.github.com/github-buttons/github-btn.html?user=rmpestano&repo=conventions-core&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="112px" height="20px"></iframe>
+            </li>
+          </ul>
+        </div>
+      </header>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/rmpestano/conventions/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/rmpestano/conventions/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+      <hr class="soften">
+      
+      <div class="marketing">
+        <h1>What is Conventions Framework?</h1>
+        <div class="row">
+          <div class="span3">
+            <p>&nbsp;</p>
+          </div>
+          <div class="span6">
+            <p class="marketing-byline">Conventions is a set of components based on top of CDI/CODI, EJB(optional), JSF, Primefaces and Hibernate build to facilitate the development of rich web applications.</p>
+          </div>
+        </div>
+      </div>  
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+      <hr class="soften">
+      
+      <div class="marketing">
+        <h1>Designed for Java EE 6(+) developers.</h1>
+        <p class="marketing-byline">Writing a java enterprise web application? Here's some reasons you'll want to use this.</p>
+        <div class="row">
+          <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_022_fire.png">
+            <h2>Hot Tecnology Integration</h2>
+            <p>Conventions is build on top of so called CDI, Hibernate, JSF, Primefaces and EJB(optional) tecnologies.</p>
+          </div>
+		  <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_059_cargo.png">
+            <h2>Servlet Container Interop</h2>
+            <p>Non JavaEE application servers like Tomcat and Jetty are also supported.</p>
+          </div>
+       
+		  <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_141_database_plus.png">
+            <h2>Easy crud</h2>
+            <p>The framework comes within helper beans that will drive you to fast and easy crud creation.</p>
+          </div>
+	     </div>
+	    <div class="row">
+          <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_176_forward.png">
+            <h2>True Pagination</h2>
+            <p>Conventions paginator is a injectable component which performs database real pagination on top of primefaces datatable.</p>
+          </div>
+       
+          <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_078_warning_sign.png">
+            <h2>Exception Handling</h2>
+            <p>Convert business logic exceptions in primefaces messages/growl and redirect to error page on unnexpected errors.</p>
+          </div>
+          <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_203_lock.png">
+            <h2>Security Helpers</h2>
+            <p>Conventions counts on three utility security components: Security method interceptor,security page and security area.</p>
+          </div>
+		 </div>
+		  <div class="row">
+		   <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_266_flag.png">
+            <h2>Internationalization</h2>
+            <p>Built in injectable i18n component.</p>
+          </div>
+		  <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_351_book_open.png">
+            <h2>Properties Files</h2>
+            <p>Easy access to .properties files through CDI injection and JSF composite component.</p>
+          </div>
+		   <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_023_cogwheels.png">
+            <h2>Service layer</h2>
+            <p>Services are used to manipulate entities which are usually represented by a table in a relational database. Conventions comes with injectable, extensible, generic stateless,stateful and custom services based on hibernate to perform database operations on top of an entity.</p>
+          </div>
+		  </div>
+		 <div class="row">
+		  <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_187_more.png">
+            <h2>Bread crumb based beans</h2>
+            <p>Have you ever tried to keep track of user navigation and had hard time? Conventions comes with a primefaces bread crumb based solution to solve this case.</p>
+          </div>
+          <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_381_github.png">
+            <h2>Open Source</h2>
+            <p>Hosted at <a href="https://github.com">GitHub</a>, Apache 2.0 licensed Open Source, for your worry-free adoption.</p>
+          </div>
+		  <div class="span4">
+            <img class="bs-icon" src="img/glyphicons_274_beer.png">
+            <h2>Getting Involved</h2>
+            <p>Contributions are really welcome, fork the project, create issues, give ideas. Any feedback is appreciated.</p>
+          </div>
+        </div>
+        </div>
+	 <hr class="soften">
+     <div class="marketing">
+        <h1>Example Projects</h1>
+        <p class="marketing-byline">Following are some example projects using Conventions Framework.</p>
+        <div class="row" >
+          <div class="span4"> 
+		   <h2><a href="http://conventions-rpestano.rhcloud.com/conventions/" target="_blank">Conventions Showcase</a></h2>
+		   <p> This application shows most of the framework components in separeted uses cases with source code on bottom of each page</p>
+		 </div>
+		  <div class="span4"> 
+		   <h2><a href="http://issuetracker-rpestano.rhcloud.com/issuetracker/" target="_blank">Conventions Issuetracker</a></h2>
+		   <p> This application is a simple online issuetracker, it was originated/migrated from a Spring based version(see footer)</p>
+		 </div>
+		 <div class="span4"> 
+		   <h2><a href="https://github.com/rmpestano/conventions-issuetracker" target="_blank">Conventions Issuetracker Tomcat</a></h2>
+		   <p> Servlet container(Tomcat) version of Conventions Issuetracker.</p>
+		 </div>
+        </div> 
+		<div class="row" >
+          <div class="span4"> 
+		   <h2><a href="https://github.com/rmpestano/conventions-archetype" target="_blank">Conventions Archetype</a></h2>
+		   <p> This application is intended to be the archetype of Conventions Framework</p>
+		 </div>
+		 <div class="span4"> 
+		   <h2><a href="https://github.com/rmpestano/conventions-archetype" target="_blank">Conventions Archetype Tomcat</a></h2>
+		   <p> Servlet container(Tomcat) version of Conventions Archetype.</p>
+		 </div>
+		  
+        </div> 
+	</div> 	  
+   </div>  
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Conventions maintained by <a href="https://github.com/rmpestano">rmpestano</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+     
+        <hr class="soften">
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+		<p class="copyright" >Conventions maintained by <a href="https://github.com/rmpestano" target="_blank">Rafael M. Pestano</a></p>
+        <p>This page is powered by <a href="http://twitter.github.com/bootstrap" target="_blank">Twitter Bootstrap</a>.</p>
+        <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>.</p>
+        <p>Icons from <a href="http://glyphicons.com" target="_blank">Glyphicons Free</a>, licensed under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>.</p>
       </footer>
+            
     </div>
-
-    
-
   </body>
 </html>
