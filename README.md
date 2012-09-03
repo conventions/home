@@ -1,4 +1,4 @@
-[Github page for conventions](http://conventionsframework.org)
+[Github page for Conventions framework](http://conventionsframework.org)
 ===========
 
 
